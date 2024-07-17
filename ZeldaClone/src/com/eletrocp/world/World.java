@@ -44,7 +44,9 @@ public class World {
 						Game.player.setY(yy * TILE_SIZE);
 					} else if (pixelAtual == 0xffff0000) {
 						// inimigo
-						Game.entities.add(new Enemy(xx * TILE_SIZE, yy * TILE_SIZE, TILE_SIZE, TILE_SIZE, Entity.ENEMY_ENT));
+						Enemy en = new Enemy(xx * TILE_SIZE, yy * TILE_SIZE, TILE_SIZE, TILE_SIZE, Entity.ENEMY_ENT);
+						Game.entities.add(en);
+						Game.enemies.add(en);						
 					} else if (pixelAtual == 0xfffbf236) {
 						// espada
 						Game.entities.add(new Sword(xx * TILE_SIZE, yy * TILE_SIZE, TILE_SIZE, TILE_SIZE, Entity.SWORD_ENT));

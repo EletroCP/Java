@@ -10,9 +10,11 @@ import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import javax.swing.JFrame;
 
+import com.eletrocp.entidades.Enemy;
 import com.eletrocp.entidades.Entity;
 import com.eletrocp.entidades.Player;
 import com.eletrocp.graficos.SpriteSheet;
@@ -32,17 +34,22 @@ private static final long serialVersionUID = 1L;
 	private BufferedImage image;
 	
 	public static List<Entity> entities;
+	public static List<Enemy> enemies;
 	public static SpriteSheet spritesheet;
 	public static World world;
 	
 	public static Player player;
 	
+	public static Random rand;
+	
 	public Game() {
+		rand = new Random();
 		setPreferredSize(new Dimension(WIDTH*SCALE, HEIGHT*SCALE));
 		initFrame();
 		
 		image = new BufferedImage(WIDTH,HEIGHT,BufferedImage.TYPE_INT_RGB);
 		entities = new ArrayList<Entity>();
+		enemies = new ArrayList<Enemy>();
 		spritesheet = new SpriteSheet("/spritesheet.png");
 		player = new Player(0,0,16,16, spritesheet.getSprite(0, 48, 16, 16));
 		entities.add(player);
