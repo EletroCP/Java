@@ -5,48 +5,97 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import com.eletrocp.main.Game;
+import com.eletrocp.world.Camera;
 import com.eletrocp.world.World;
 
 public class Enemy extends Entity{
 	
 	private double spd = 0.6;
 	private int maskX = 8, maskY = 8, maskW = 16, maskH = 16;
+	private int frames = 0, maxFrames = 5, index = 0, maxIndex = 1;
+	private boolean moved = false;
+	
+	public int right_dir = 0;
+	public int left_dir = 1;
+	public int up_dir = 2;
+	public int down_dir = 3;
+	public int dir = 0;
+	
+	private BufferedImage[] rightEnemy;
+	private BufferedImage[] leftEnemy;
+	private BufferedImage[] upEnemy;
+	private BufferedImage[] downEnemy;
 
 	public Enemy(double x, double y, int width, int height, BufferedImage sprite) {
-		super(x, y, width, height, sprite);
+	    super(x, y, width, height, sprite);
+	    
+	    rightEnemy = new BufferedImage[2];
+	    leftEnemy = new BufferedImage[2];
+	    upEnemy = new BufferedImage[2];
+	    downEnemy = new BufferedImage[2];
+	    
+	    for(int i = 0; i < 2; i += 1) {            
+	        rightEnemy[i] = Game.spritesheet.getSprite(64 + (i * 16), 112, 16, 16);
+	    }
+	    
+	    for(int i = 0; i < 2; i += 1) {            
+	        leftEnemy[i] = Game.spritesheet.getSprite(48 - (i * 16), 112, 16, 16);
+	    }
+	    
+	    for(int i = 0; i < 2; i += 1) {            
+	        upEnemy[i] = Game.spritesheet.getSprite(96 + (i * 16), 112, 16, 16);
+	    }
+	    
+	    for(int i = 0; i < 2; i += 1) {            
+	        downEnemy[i] = Game.spritesheet.getSprite(0 + (i * 16), 112, 16, 16);
+	    }
 	}
+	
 	public void tick() {
-		maskX = 8;
-		maskY = 8;
-		maskW = 16;
-		maskH = 16;
-		if(
-				(int)x < Game.player.getX() 
-				&& World.isFree((int)(x + spd), this.getY())
-				&& !isColidding((int)(x + spd), this.getY())
-			) {
-			x += spd;
-		} else if (
-				(int)x > Game.player.getX() 
-				&& World.isFree((int)(x - spd), this.getY())
-				&& !isColidding((int)(x - spd), this.getY())
-				) {
-			x -= spd;
-		}
-		
-		if(
-				(int)y < Game.player.getY() 
-				&& World.isFree(this.getX(), (int)(y + spd))
-				&& !isColidding(this.getX(), (int)(y + spd))
-				) {
-			y += spd;
-		} else if (
-				(int)y > Game.player.getY() 
-				&& World.isFree(this.getX(), (int)(y - spd))
-				&& !isColidding(this.getX(), (int)(y - spd))
-				) {
-			y -= spd;
-		}
+	    maskX = 8;
+	    maskY = 8;
+	    maskW = 16;
+	    maskH = 16;
+	    moved = false;
+	    
+	    if((int)x < Game.player.getX() 
+	        && World.isFree((int)(x + spd), this.getY())
+	        && !isColidding((int)(x + spd), this.getY())) {
+	        x += spd;
+	        dir = right_dir;
+	        moved = true;
+	    } else if ((int)x > Game.player.getX() 
+	        && World.isFree((int)(x - spd), this.getY())
+	        && !isColidding((int)(x - spd), this.getY())) {
+	        x -= spd;
+	        dir = left_dir;
+	        moved = true;
+	    }
+	    
+	    if((int)y < Game.player.getY() 
+	        && World.isFree(this.getX(), (int)(y + spd))
+	        && !isColidding(this.getX(), (int)(y + spd))) {
+	        y += spd;
+	        dir = down_dir;
+	        moved = true;
+	    } else if ((int)y > Game.player.getY() 
+	        && World.isFree(this.getX(), (int)(y - spd))
+	        && !isColidding(this.getX(), (int)(y - spd))) {
+	        y -= spd;
+	        dir = up_dir;
+	        moved = true;
+	    }
+	    
+	    if(moved) {
+	        frames += 1;
+	        if(frames == maxFrames) {
+	            frames = 0;
+	            index += 1;
+	            if(index > maxIndex) {
+	                index = 0;
+	            }
+	        }
+	    }
 	}
 	
 	public boolean isColidding(int xNext, int yNext) {
@@ -66,10 +115,22 @@ public class Enemy extends Entity{
 	}
 	
 	public void render(Graphics g) {
-		super.render(g);
 		//usado para ver a mascara de colisão
+	    //super.render(g);
 		// g.setColor(Color.blue);
 		// g.fillRect(this.getX() + maskX - Camera.x,this.getY() + maskY - Camera.y, maskW, maskH);
+	    
+	    if(dir == right_dir) {            
+	        g.drawImage(rightEnemy[index], this.getX() - Camera.x, this.getY() - Camera.y, null);
+	    } else if(dir == left_dir) {
+	        g.drawImage(leftEnemy[index], this.getX() - Camera.x, this.getY() - Camera.y, null);
+	    }
+	    
+	    if(dir == up_dir) {            
+	        g.drawImage(upEnemy[index], this.getX() - Camera.x, this.getY() - Camera.y, null);
+	    } else if(dir == down_dir) {
+	        g.drawImage(downEnemy[index], this.getX() - Camera.x, this.getY() - Camera.y, null);
+	    }
 	}
 
 }
