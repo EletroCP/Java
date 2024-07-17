@@ -102,7 +102,10 @@ public class Enemy extends Entity{
 		    }
 	    } else {
 	    	if(Game.rand.nextInt(100) < 10)
-	    	Game.player.life --;
+	    	Player.life -= Game.rand.nextInt(3);
+	    	if(Player.life <= 0) {
+	    		// gameover
+	    	}
 	    }
 	}
 	

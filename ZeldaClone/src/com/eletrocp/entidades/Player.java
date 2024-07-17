@@ -12,7 +12,7 @@ public class Player extends Entity {
 	private int frames = 0, maxFrames = 5, index = 0, maxIndex = 1;
 	public int right_dir = 0, left_dir = 1, up_dir = 2, down_dir = 3;
 	public int dir = 0;
-	public int life = 100;
+	public static double life = 100, maxLife = 100;
 
 	public double spd = 1.4;
 

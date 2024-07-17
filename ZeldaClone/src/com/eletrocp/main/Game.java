@@ -18,6 +18,7 @@ import com.eletrocp.entidades.Enemy;
 import com.eletrocp.entidades.Entity;
 import com.eletrocp.entidades.Player;
 import com.eletrocp.graficos.SpriteSheet;
+import com.eletrocp.graficos.UI;
 import com.eletrocp.world.World;
 
 public class Game extends Canvas implements Runnable, KeyListener {
@@ -42,11 +43,14 @@ private static final long serialVersionUID = 1L;
 	
 	public static Random rand;
 	
+	public UI ui;
+	
 	public Game() {
 		rand = new Random();
 		setPreferredSize(new Dimension(WIDTH*SCALE, HEIGHT*SCALE));
 		initFrame();
 		
+		ui = new UI();
 		image = new BufferedImage(WIDTH,HEIGHT,BufferedImage.TYPE_INT_RGB);
 		entities = new ArrayList<Entity>();
 		enemies = new ArrayList<Enemy>();
@@ -114,6 +118,8 @@ private static final long serialVersionUID = 1L;
 			Entity e = entities.get(i);
 			e.render(g);
 		}
+		
+		ui.render(g);
 		
 		g = bs.getDrawGraphics();
 		g.drawImage(image, 0, 0, WIDTH*SCALE, HEIGHT*SCALE, null);
