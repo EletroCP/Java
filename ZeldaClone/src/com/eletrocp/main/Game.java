@@ -30,6 +30,7 @@ private static final long serialVersionUID = 1L;
 	private boolean isRunning;
 	public final static int WIDTH = 240;
 	public final static int HEIGHT = 160;
+	public static int frames = 0;
 	private final int SCALE  = 3;
 	
 	private BufferedImage image;
@@ -134,7 +135,6 @@ private static final long serialVersionUID = 1L;
 		//momento para fazer o update do jogo
 		double ns = 1000000000 / amountOfTicks;
 		double delta = 0;
-		int frames = 0;
 		double timer = System.currentTimeMillis();
 		while(isRunning) {
 			long now = System.nanoTime();
