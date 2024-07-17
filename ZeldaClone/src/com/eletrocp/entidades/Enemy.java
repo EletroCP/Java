@@ -52,12 +52,16 @@ public class Enemy extends Entity{
 	}
 	
 	public void tick() {
+		/*
 	    maskX = 8;
 	    maskY = 8;
 	    maskW = 16;
 	    maskH = 16;
+	    */
 	    moved = false;
 	    
+	    if(isColiddingWithPlayer() == false) {
+	    	
 	    if((int)x < Game.player.getX() 
 	        && World.isFree((int)(x + spd), this.getY())
 	        && !isColidding((int)(x + spd), this.getY())) {
@@ -93,9 +97,20 @@ public class Enemy extends Entity{
 	            index += 1;
 	            if(index > maxIndex) {
 	                index = 0;
-	            }
-	        }
+		            }
+		        }
+		    }
+	    } else {
+	    	if(Game.rand.nextInt(100) < 10)
+	    	Game.player.life --;
 	    }
+	}
+	
+	public boolean isColiddingWithPlayer() {
+		Rectangle enemyCurrent = new Rectangle(this.getX() + maskX, this.getY() + maskY, maskW, maskH);
+		Rectangle player = new Rectangle(Game.player.getX(), Game.player.getY(), 16, 16);
+
+		return enemyCurrent.intersects(player);
 	}
 	
 	public boolean isColidding(int xNext, int yNext) {

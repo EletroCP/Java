@@ -9,16 +9,16 @@ import com.eletrocp.world.World;
 
 public class Player extends Entity {
 	
-	public boolean right, left, up, down;
-	public int right_dir = 0;
-	public int left_dir = 1;
-	public int up_dir = 2;
-	public int down_dir = 3;
+	private int frames = 0, maxFrames = 5, index = 0, maxIndex = 1;
+	public int right_dir = 0, left_dir = 1, up_dir = 2, down_dir = 3;
 	public int dir = 0;
+	public int life = 100;
+
 	public double spd = 1.4;
 
-	private int frames = 0, maxFrames = 5, index = 0, maxIndex = 1;
 	private boolean moved = false;
+	public boolean right, left, up, down;
+
 	private BufferedImage[] rightPlayer;
 	private BufferedImage[] leftPlayer;
 	private BufferedImage[] upPlayer;
