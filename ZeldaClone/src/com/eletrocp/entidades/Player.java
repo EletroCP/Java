@@ -10,24 +10,24 @@ import com.eletrocp.world.World;
 public class Player extends Entity {
 
     // Variáveis de animação e estado
-    private int frames = 0, maxFrames = 5, index = 0, maxIndex = 3;
+    private int frames = 0, maxFrames = 5, index = 0;
+    private int damageFrames = 0, maxDamageFrames = 20; // Duração da animação de dano
+    private int knockbackFrames = 0, maxKnockbackFrames = 25;
     public int right_dir = 0, left_dir = 1, up_dir = 2, down_dir = 3;
     public int dir = 0;
-    public static boolean knockback = false;
-    public static double life = 100, maxLife = 100;
-    public static double mana = 100, maxMana = 100;
-    public boolean isDamaged = false;
-    private int damageFrames = 0, maxDamageFrames = 20; // Duração da animação de dano
 
-    private int knockbackFrames = 0, maxKnockbackFrames = 25;
     private double knockbackDistance = 60;
     private double knockbackX = 0, knockbackY = 0;
-
     public double spd = 1.4;
+    public static double life = 100, maxLife = 100;
+    public static double mana = 100, maxMana = 100;
 
+    
     private boolean moved = false;
+    public static boolean knockback = false;
+    public boolean isDamaged = false;
     public boolean right, left, up, down;
-
+    
     private BufferedImage[] rightPlayer;
     private BufferedImage[] leftPlayer;
     private BufferedImage[] upPlayer;
@@ -43,8 +43,8 @@ public class Player extends Entity {
         upPlayer = new BufferedImage[2];
         downPlayer = new BufferedImage[2];
         knockbackPlayer = new BufferedImage[2];
-        playerDamage = new BufferedImage[4]; // Ajuste para 4 sprites de dano
-
+        playerDamage = new BufferedImage[4];
+        
         for (int i = 0; i < 2; i++) {
             rightPlayer[i] = Game.spritesheet.getSprite(64 + (i * 16), 48, 16, 16);
             leftPlayer[i] = Game.spritesheet.getSprite(48 - (i * 16), 48, 16, 16);
@@ -79,7 +79,7 @@ public class Player extends Entity {
             if (damageFrames >= maxDamageFrames) {
                 isDamaged = false;
                 damageFrames = 0;
-                index = 0; // Resetar o índice após a animação de dano
+                index = 0;
             }
 
             frames++;

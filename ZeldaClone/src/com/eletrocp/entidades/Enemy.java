@@ -10,17 +10,19 @@ import com.eletrocp.world.World;
 
 public class Enemy extends Entity {
 
-	private double spd = 0.2;
 	private int maskX = 0, maskY = 0, maskW = 16, maskH = 16;
 	private int frames = 0, maxFrames = 5, index = 0, maxIndex = 1;
-	private boolean moved = false;
-	private boolean push = false;
-
 	public int right_dir = 0;
 	public int left_dir = 1;
 	public int up_dir = 2;
 	public int down_dir = 3;
 	public int dir = 0;
+
+	private double spd = 0.2;
+	
+	private boolean moved = false;
+	private boolean push = false;
+
 
 	private BufferedImage[] rightEnemy;
 	private BufferedImage[] leftEnemy;
