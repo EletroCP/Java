@@ -1,6 +1,7 @@
 package com.eletrocp.entidades;
 
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import com.eletrocp.main.Game;
@@ -16,6 +17,7 @@ public class Entity {
 	protected double y;
 	protected int width;
 	protected int height;
+	private int maskX, maskY, maskW, maskH;
 	
 	private BufferedImage sprite;
 	
@@ -25,6 +27,18 @@ public class Entity {
 		this.width = width;
 		this.height = height;
 		this.sprite = sprite;
+		
+		this.maskX = 0;
+		this.maskY = 0;
+		this.maskW = width;
+		this.maskH = height;
+	}
+	
+	public void setMask(int maskX, int maskY, int maskW, int maskH) {
+		this.maskX = maskX;
+		this.maskY = maskY;
+		this.maskW = maskW;
+		this.maskH = maskH;
 	}
 	
 	public int getX() {
@@ -57,5 +71,12 @@ public class Entity {
 	
 	public void tick() {
 		// Comportamento da entidade no jogo
+	}
+	
+	public static boolean isColidding(Entity e1, Entity e2) {
+		Rectangle e1Mask = new Rectangle(e1.getX() + e1.maskX, e1.getY() + e1.maskY);
+		Rectangle e2Mask = new Rectangle(e2.getX() + e2.maskX, e2.getY() + e2.maskY);
+		
+		return e1Mask.intersects(e2Mask);
 	}
 }

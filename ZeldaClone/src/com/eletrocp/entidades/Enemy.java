@@ -1,5 +1,6 @@
 package com.eletrocp.entidades;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -11,7 +12,7 @@ import com.eletrocp.world.World;
 public class Enemy extends Entity {
 
 	private double spd = 0.2;
-	private int maskX = 8, maskY = 8, maskW = 16, maskH = 16;
+	private int maskX = 1, maskY = 1, maskW = 16, maskH = 16;
 	private int frames = 0, maxFrames = 5, index = 0, maxIndex = 1;
 	private boolean moved = false;
 
