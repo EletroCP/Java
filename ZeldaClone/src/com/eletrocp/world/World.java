@@ -9,6 +9,8 @@ import javax.imageio.ImageIO;
 import com.eletrocp.entidades.Enemy;
 import com.eletrocp.entidades.Entity;
 import com.eletrocp.entidades.Lifekit;
+import com.eletrocp.entidades.ManaPotion;
+import com.eletrocp.entidades.Septer;
 import com.eletrocp.entidades.Sword;
 import com.eletrocp.main.Game;
 
@@ -33,27 +35,43 @@ public class World {
 					tiles[xx + (yy * WIDTH)] = new FloorTile(xx * TILE_SIZE, yy * TILE_SIZE, Tile.TILE_FLOOR); // Valor padrão
 					
 					if(pixelAtual == 0xff000000) {
-						// chão
+						
 						tiles[xx + (yy * WIDTH)] = new FloorTile(xx * TILE_SIZE, yy * TILE_SIZE, Tile.TILE_FLOOR);
+					
 					} else if (pixelAtual == 0xffffffff) {
-						// parede
 						tiles[xx + (yy * WIDTH)] = new WallTile(xx * TILE_SIZE, yy * TILE_SIZE, Tile.TILE_WALL);
+						
+					
 					} else if (pixelAtual == 0xff5fcde4) {
-						// Player
+						
 						Game.player.setX(xx * TILE_SIZE);
 						Game.player.setY(yy * TILE_SIZE);
+					
 					} else if (pixelAtual == 0xffff0000) {
-						// inimigo
+						
 						Enemy en = new Enemy(xx * TILE_SIZE, yy * TILE_SIZE, TILE_SIZE, TILE_SIZE, Entity.ENEMY_ENT);
 						Game.entities.add(en);
 						Game.enemies.add(en);						
+					
 					} else if (pixelAtual == 0xfffbf236) {
-						// espada
+						
 						Game.entities.add(new Sword(xx * TILE_SIZE, yy * TILE_SIZE, TILE_SIZE, TILE_SIZE, Entity.SWORD_ENT));
+					
+					}  else if (pixelAtual == 0xff60cfad) {
+						
+						Septer en = new Septer(xx * TILE_SIZE, yy * TILE_SIZE, TILE_SIZE, TILE_SIZE, Entity.SEPTER_ENT);
+						Game.entities.add(en);
+					
 					} else if (pixelAtual == 0xff6abe30) {
-						// lifekit
+						
 						Lifekit en = new Lifekit(xx * TILE_SIZE, yy * TILE_SIZE, TILE_SIZE, TILE_SIZE, Entity.LIFEKIT_ENT);
 						Game.entities.add(en);
+					
+					} else if (pixelAtual == 0xff76428a) {
+						
+						ManaPotion en = new ManaPotion(xx * TILE_SIZE, yy * TILE_SIZE, TILE_SIZE, TILE_SIZE, Entity.MANA_POTION_ENT);
+						Game.entities.add(en);
+					
 					}
 				}
 			}

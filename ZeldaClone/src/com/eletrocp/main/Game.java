@@ -31,6 +31,7 @@ private static final long serialVersionUID = 1L;
 	public final static int WIDTH = 240;
 	public final static int HEIGHT = 160;
 	public static int frames = 0;
+	public static int FPS;
 	private final int SCALE  = 3;
 	
 	private BufferedImage image;
@@ -149,6 +150,7 @@ private static final long serialVersionUID = 1L;
 			
 			if(System.currentTimeMillis() - timer >= 1000) {
 				System.out.println("FPS: " + frames);
+				FPS = frames;
 				frames = 0;
 				timer+=1000;
 			}

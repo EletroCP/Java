@@ -14,6 +14,7 @@ public class Player extends Entity {
 	public int dir = 0;
 	public static boolean knockback = false;
 	public static double life = 100, maxLife = 100;
+	public static double mana = 100, maxMana = 100;
 
 	private int knockbackFrames = 0, maxKnockbackFrames = 25; // Ajuste a duração do knockback conforme necessário
 	private double knockbackDistance = 60; // Distância do knockback
@@ -114,18 +115,38 @@ public class Player extends Entity {
 			}
 		}
 		
-		this.checkCollisionItens();
+		this.checkCollisionLifePack();
+		this.checkCollisionManaPotion();
+		this.manaRegen();
 
 		Camera.x = Camera.clamp(this.getX() - (Game.WIDTH / 2), 0, World.WIDTH * 16 - Game.WIDTH);
 		Camera.y = Camera.clamp(this.getY() - (Game.HEIGHT / 2), 0, World.HEIGHT * 16 - Game.HEIGHT);
 	}
 	
-	public void checkCollisionItens() {
+	public void manaRegen() {
+		if(mana < maxMana) {
+			mana += 0.015;
+		}
+	}
+	
+	public void checkCollisionLifePack() {
 		for(int i = 0; i < Game.entities.size(); i+=1) {
 			Entity atual = Game.entities.get(i);
 			if(atual instanceof Lifekit) {
 				if(Entity.isColidding(this, atual) && life < maxLife) {
 					life = Lifekit.heal(life, maxLife);
+					Game.entities.remove(i);
+				}
+			}
+		}
+	}
+	
+	public void checkCollisionManaPotion() {
+		for(int i = 0; i < Game.entities.size(); i+=1) {
+			Entity atual = Game.entities.get(i);
+			if(atual instanceof ManaPotion) {
+				if(Entity.isColidding(this, atual) && mana < maxMana) {
+					mana = Lifekit.heal(mana, maxMana);
 					Game.entities.remove(i);
 				}
 			}
