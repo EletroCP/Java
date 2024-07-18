@@ -14,6 +14,7 @@ public class Enemy extends Entity {
 	private int maskX = 0, maskY = 0, maskW = 16, maskH = 16;
 	private int frames = 0, maxFrames = 5, index = 0, maxIndex = 1;
 	private boolean moved = false;
+	private boolean push = false;
 
 	public int right_dir = 0;
 	public int left_dir = 1;
@@ -36,17 +37,8 @@ public class Enemy extends Entity {
 
 		for (int i = 0; i < 2; i += 1) {
 			rightEnemy[i] = Game.spritesheet.getSprite(64 + (i * 16), 112, 16, 16);
-		}
-
-		for (int i = 0; i < 2; i += 1) {
 			leftEnemy[i] = Game.spritesheet.getSprite(48 - (i * 16), 112, 16, 16);
-		}
-
-		for (int i = 0; i < 2; i += 1) {
 			upEnemy[i] = Game.spritesheet.getSprite(96 + (i * 16), 112, 16, 16);
-		}
-
-		for (int i = 0; i < 2; i += 1) {
 			downEnemy[i] = Game.spritesheet.getSprite(0 + (i * 16), 112, 16, 16);
 		}
 	}
@@ -93,7 +85,10 @@ public class Enemy extends Entity {
 		} else {
 			if (Game.rand.nextInt(100) < 10) {
 				Player.life -= Game.rand.nextInt(1,3);
-				Game.player.applyKnockback(x, y); // Aplicar knockback ao jogador
+				Game.player.isDamaged = true;
+				if(push) {
+					Game.player.applyKnockback(x, y); // Aplicar knockback ao jogador
+				}
 			}
 			if (Player.life <= 0) {
 				// gameover
