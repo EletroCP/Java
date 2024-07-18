@@ -67,6 +67,9 @@ public class Entity {
 	
 	public void render(Graphics g) {
 		g.drawImage(sprite, this.getX() - Camera.x, this.getY() - Camera.y, null);
+		
+		// g.setColor(Color.red);
+		//g.fillRect(this.getX() +maskX - Camera.x, this.getY() + maskY - Camera.y, maskW, maskH);
 	}
 	
 	public void tick() {
@@ -74,8 +77,8 @@ public class Entity {
 	}
 	
 	public static boolean isColidding(Entity e1, Entity e2) {
-		Rectangle e1Mask = new Rectangle(e1.getX() + e1.maskX, e1.getY() + e1.maskY);
-		Rectangle e2Mask = new Rectangle(e2.getX() + e2.maskX, e2.getY() + e2.maskY);
+		Rectangle e1Mask = new Rectangle(e1.getX() + e1.maskX, e1.getY() + e1.maskY, e1.maskW, e1.maskH);
+		Rectangle e2Mask = new Rectangle(e2.getX() + e2.maskX, e2.getY() + e2.maskY, e2.maskW, e2.maskH);
 		
 		return e1Mask.intersects(e2Mask);
 	}

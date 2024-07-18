@@ -1,6 +1,5 @@
 package com.eletrocp.entidades;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -12,7 +11,7 @@ import com.eletrocp.world.World;
 public class Enemy extends Entity {
 
 	private double spd = 0.2;
-	private int maskX = 1, maskY = 1, maskW = 16, maskH = 16;
+	private int maskX = 0, maskY = 0, maskW = 16, maskH = 16;
 	private int frames = 0, maxFrames = 5, index = 0, maxIndex = 1;
 	private boolean moved = false;
 
@@ -93,7 +92,7 @@ public class Enemy extends Entity {
 			}
 		} else {
 			if (Game.rand.nextInt(100) < 10) {
-				Player.life -= Game.rand.nextInt(3);
+				Player.life -= Game.rand.nextInt(1,3);
 				Game.player.applyKnockback(x, y); // Aplicar knockback ao jogador
 			}
 			if (Player.life <= 0) {

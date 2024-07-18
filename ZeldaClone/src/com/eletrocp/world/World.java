@@ -52,7 +52,8 @@ public class World {
 						Game.entities.add(new Sword(xx * TILE_SIZE, yy * TILE_SIZE, TILE_SIZE, TILE_SIZE, Entity.SWORD_ENT));
 					} else if (pixelAtual == 0xff6abe30) {
 						// lifekit
-						Game.entities.add(new Lifekit(xx * TILE_SIZE, yy * TILE_SIZE, TILE_SIZE, TILE_SIZE, Entity.LIFEKIT_ENT));
+						Lifekit en = new Lifekit(xx * TILE_SIZE, yy * TILE_SIZE, TILE_SIZE, TILE_SIZE, Entity.LIFEKIT_ENT);
+						Game.entities.add(en);
 					}
 				}
 			}
