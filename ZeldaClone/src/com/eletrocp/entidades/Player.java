@@ -18,18 +18,22 @@ public class Player extends Entity {
     public static int weaponID = 0;
     public int right_dir = 0, left_dir = 1, up_dir = 2, down_dir = 3;
     public int dir = 0;
+    private int attackCooldown = 20;
+    private int currentAttackCooldown = 0;
 
     private double knockbackDistance = 60;
     private double knockbackX = 0, knockbackY = 0;
     public double spd = 1.4;
     public double life = 100, maxLife = 100;
     public static double mana = 100, maxMana = 100;
+    
 
     private boolean moved = false;
     private boolean hasWeapon = false;
     public boolean isDamaged = false;
     public boolean right, left, up, down;
     public static boolean knockback = false;
+    public static boolean hasAtack = false;
 
     private BufferedImage[] rightPlayer;
     private BufferedImage[] leftPlayer;
@@ -110,6 +114,44 @@ public class Player extends Entity {
 
         if (life <= 0) {
             resetGame();
+        }
+
+        if (currentAttackCooldown > 0) {
+            currentAttackCooldown--; // Decrementa o contador de recarga a cada tick
+        }
+
+        if (hasAtack && hasWeapon && currentAttackCooldown <= 0) {
+            hasAtack = false;
+            currentAttackCooldown = attackCooldown; // Reinicia o contador de recarga
+
+            if (weaponID == 2 && mana >= 10) {
+                mana -= 10;
+                int dx = 0;
+                int dy = 0;
+                int px = 0;
+                int py = 0;
+
+                if (dir == right_dir) {
+                    dx = 1;
+                    dy = 0;
+                    px = 20;
+                } else if (dir == left_dir) {
+                    dx = -1;
+                    dy = 0;
+                    px = -20;
+                } else if (dir == up_dir) {
+                    dy = -1;
+                    dx = 0;
+                    py = -15;
+                } else {
+                    dy = +1;
+                    dx = 0;
+                    py = 15;
+                }
+
+                Projectile projectile = new Projectile(this.getX() + px, this.getY() + py, 3, 3, null, dx, dy);
+                Game.projectiles.add(projectile);
+            }
         }
     }
 

@@ -17,6 +17,7 @@ import javax.swing.JFrame;
 import com.eletrocp.entidades.Enemy;
 import com.eletrocp.entidades.Entity;
 import com.eletrocp.entidades.Player;
+import com.eletrocp.entidades.Projectile;
 import com.eletrocp.graficos.SpriteSheet;
 import com.eletrocp.graficos.UI;
 import com.eletrocp.world.World;
@@ -38,6 +39,7 @@ private static final long serialVersionUID = 1L;
 	
 	public static List<Entity> entities;
 	public static List<Enemy> enemies;
+	public static List<Projectile> projectiles;
 	public static SpriteSheet spritesheet;
 	public static World world;
 	
@@ -56,6 +58,7 @@ private static final long serialVersionUID = 1L;
 		image = new BufferedImage(WIDTH,HEIGHT,BufferedImage.TYPE_INT_RGB);
 		entities = new ArrayList<Entity>();
 		enemies = new ArrayList<Enemy>();
+		projectiles = new ArrayList<Projectile>();
 		spritesheet = new SpriteSheet("/spritesheet.png");
 		player = new Player(0,0,16,16, spritesheet.getSprite(0, 48, 16, 16));
 		entities.add(player);
@@ -103,6 +106,10 @@ private static final long serialVersionUID = 1L;
 			Entity e = entities.get(i);
 			e.tick();
 		}
+		
+		for(int i = 0; i < projectiles.size() ; i +=1) {
+			projectiles.get(i).tick();
+		}
 	}
 	
 	public void render() {
@@ -119,6 +126,10 @@ private static final long serialVersionUID = 1L;
 		for(int i = 0; i < entities.size(); i +=1) {
 			Entity e = entities.get(i);
 			e.render(g);
+		}
+		
+		for(int i = 0; i < projectiles.size() ; i +=1) {
+			projectiles.get(i).render(g);
 		}
 		
 		ui.render(g);
@@ -176,6 +187,10 @@ private static final long serialVersionUID = 1L;
 			player.up = true;
 		} else if (e.getKeyCode() == KeyEvent.VK_S) {
 			player.down = true;
+		}
+		
+		if(e.getKeyCode() == KeyEvent.VK_SPACE) {
+			Player.hasAtack = true;
 		}
 	}
 

@@ -21,7 +21,7 @@ public class Enemy extends Entity {
 	private double spd = 0.2;
 	
 	private boolean moved = false;
-	private boolean push = false;
+	private boolean push = true;
 
 
 	private BufferedImage[] rightEnemy;
