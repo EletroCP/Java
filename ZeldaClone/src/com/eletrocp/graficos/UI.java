@@ -15,10 +15,10 @@ public class UI {
 		g.setColor(Color.red);
 		g.fillRect(5, 5, 50, 5);
 		g.setColor(Color.green);
-		g.fillRect(5, 5, (int)((Player.life / Player.maxLife) * 50), 5);
+		g.fillRect(5, 5, (int)((Game.player.life / Game.player.maxLife) * 50), 5);
 		g.setColor(Color.white);
 		g.setFont(new Font("arial", Font.BOLD, 8));
-		g.drawString((int)Player.life+"/"+(int)Player.maxLife, 58, 10);
+		g.drawString((int)Game.player.life +"/"+(int)Game.player.maxLife, 58, 10);
 	}
 	
 	public void manaBar(Graphics g) {

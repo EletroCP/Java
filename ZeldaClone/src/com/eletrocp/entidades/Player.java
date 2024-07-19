@@ -2,7 +2,9 @@ package com.eletrocp.entidades;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
+import com.eletrocp.graficos.SpriteSheet;
 import com.eletrocp.main.Game;
 import com.eletrocp.world.Camera;
 import com.eletrocp.world.World;
@@ -10,7 +12,7 @@ import com.eletrocp.world.World;
 public class Player extends Entity {
 
     // Variáveis de animação e estado
-    private int frames = 0, maxFrames = 5, index = 0;
+    private int frames = 0, maxFrames, index;
     private int damageFrames = 0, maxDamageFrames = 20; // Duração da animação de dano
     private int knockbackFrames = 0, maxKnockbackFrames = 25;
     public int right_dir = 0, left_dir = 1, up_dir = 2, down_dir = 3;
@@ -19,7 +21,7 @@ public class Player extends Entity {
     private double knockbackDistance = 60;
     private double knockbackX = 0, knockbackY = 0;
     public double spd = 1.4;
-    public static double life = 100, maxLife = 100;
+    public double life = 100, maxLife = 100;
     public static double mana = 100, maxMana = 100;
 
     
@@ -53,7 +55,7 @@ public class Player extends Entity {
             knockbackPlayer[i] = Game.spritesheet.getSprite(48 + (i * 16), 48, 16, 16);
         }
 
-        for (int i = 0; i < 4; i++) { // Ajuste para 4 sprites de dano
+        for (int i = 0; i < 4; i++) {
             playerDamage[i] = Game.spritesheet.getSprite(0 + (i * 16), 64, 16, 16);
         }
     }
@@ -90,6 +92,18 @@ public class Player extends Entity {
                     index = 0;
                 }
             }
+        }
+        
+        if(life <= 0) {
+        	Game.entities.clear();
+        	Game.enemies.clear();
+        	Game.entities = new ArrayList<Entity>();
+        	Game.enemies = new ArrayList<Enemy>();
+        	Game.spritesheet = new SpriteSheet("/spritesheet.png");
+        	Game.player = new Player(0,0,16,16, Game.spritesheet.getSprite(0, 48, 16, 16));
+        	Game.entities.add(Game.player);
+        	Game.world = new World("/map.png");
+        	return;
         }
     }
 
@@ -185,9 +199,10 @@ public class Player extends Entity {
 
     public void render(Graphics g) {
         if (knockback) {
+        	
             g.drawImage(knockbackPlayer[index], this.getX() - Camera.x, this.getY() - Camera.y, null);
         } else if (isDamaged) {
-            int damageIndex = index % playerDamage.length; // Garantir que o índice esteja dentro dos limites
+            int damageIndex = index % playerDamage.length;
             g.drawImage(playerDamage[damageIndex], this.getX() - Camera.x, this.getY() - Camera.y, null);
         } else {
             g.drawImage(getCurrentAnimation()[index], this.getX() - Camera.x, this.getY() - Camera.y, null);

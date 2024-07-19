@@ -21,7 +21,7 @@ public class Enemy extends Entity {
 	private double spd = 0.2;
 	
 	private boolean moved = false;
-	private boolean push = false;
+	private boolean push = true;
 
 
 	private BufferedImage[] rightEnemy;
@@ -86,13 +86,13 @@ public class Enemy extends Entity {
 			}
 		} else {
 			if (Game.rand.nextInt(100) < 10) {
-				Player.life -= Game.rand.nextInt(1,3);
+				Game.player.life -= Game.rand.nextInt(1,3);
 				Game.player.isDamaged = true;
 				if(push) {
 					Game.player.applyKnockback(x, y); // Aplicar knockback ao jogador
 				}
 			}
-			if (Player.life <= 0) {
+			if (Game.player.life <= 0) {
 				// gameover
 			}
 		}
