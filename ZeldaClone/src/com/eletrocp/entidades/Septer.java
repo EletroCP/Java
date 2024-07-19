@@ -1,11 +1,7 @@
 package com.eletrocp.entidades;
 
-import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-
-import com.eletrocp.world.Camera;
 
 public class Septer extends Entity{
 
@@ -22,12 +18,5 @@ public class Septer extends Entity{
 		Rectangle e2Mask = new Rectangle(e2.getX() + e2.maskX, e2.getY() + e2.maskY, e2.maskW, e2.maskH);
 		
 		return e1Mask.intersects(e2Mask);
-	}
-	
-	public void render(Graphics g) {
-		super.render(g);
-		g.setColor(Color.red);
-		g.fillRect(this.getX() + maskX - Camera.x,this.getY() + maskY - Camera.y, maskW, maskH);
-	}
-	
+	}	
 }
