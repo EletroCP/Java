@@ -8,6 +8,7 @@ import javax.imageio.ImageIO;
 
 import com.eletrocp.entidades.Enemy;
 import com.eletrocp.entidades.Entity;
+import com.eletrocp.entidades.Javali;
 import com.eletrocp.entidades.Lifekit;
 import com.eletrocp.entidades.ManaPotion;
 import com.eletrocp.entidades.Septer;
@@ -72,6 +73,9 @@ public class World {
 						ManaPotion en = new ManaPotion(xx * TILE_SIZE, yy * TILE_SIZE, TILE_SIZE, TILE_SIZE, Entity.MANA_POTION_ENT);
 						Game.entities.add(en);
 					
+					} else  if (pixelAtual == 0xffaa7256) {
+						Javali en = new Javali(xx * TILE_SIZE, yy * TILE_SIZE, TILE_SIZE, TILE_SIZE, Entity.JAVALI_ENT);
+						Game.entities.add(en);
 					}
 				}
 			}

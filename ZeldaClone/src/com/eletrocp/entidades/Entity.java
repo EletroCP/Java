@@ -14,7 +14,8 @@ public class Entity {
 	public static BufferedImage ENEMY_ENT = Game.spritesheet.getSprite(0, 112, 16, 16);
 	public static BufferedImage MANA_POTION_ENT = Game.spritesheet.getSprite(48, 80, 16, 16);
 	public static BufferedImage SEPTER_ENT = Game.spritesheet.getSprite(64, 80, 16, 16);
-	
+	public static BufferedImage JAVALI_ENT = Game.spritesheet.getSprite(0, 144, 64, 41);
+
 	protected double x;
 	protected double y;
 	protected int width;
