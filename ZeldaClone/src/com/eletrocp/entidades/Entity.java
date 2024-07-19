@@ -15,6 +15,10 @@ public class Entity {
 	public static BufferedImage MANA_POTION_ENT = Game.spritesheet.getSprite(48, 80, 16, 16);
 	public static BufferedImage SEPTER_ENT = Game.spritesheet.getSprite(64, 80, 16, 16);
 	public static BufferedImage JAVALI_ENT = Game.spritesheet.getSprite(0, 144, 64, 41);
+	public static BufferedImage SWORD_RIGHT_ENT = Game.spritesheet.getSprite(32, 80, 16, 16);
+	public static BufferedImage SWORD_LEFT_ENT = Game.spritesheet.getSprite(32, 96, 16, 16);
+	public static BufferedImage CEPTER_LEFT_ENT = Game.spritesheet.getSprite(80, 96, 16, 16);
+	public static BufferedImage CEPTER_RIGHT_ENT = Game.spritesheet.getSprite(80, 80, 16, 16);
 
 	protected double x;
 	protected double y;
