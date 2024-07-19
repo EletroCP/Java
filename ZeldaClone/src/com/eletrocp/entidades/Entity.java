@@ -20,7 +20,10 @@ public class Entity {
 	protected double y;
 	protected int width;
 	protected int height;
-	private int maskX, maskY, maskW, maskH;
+	protected int maskX;
+	protected int maskY;
+	protected int maskW;
+	protected int maskH;
 	
 	private BufferedImage sprite;
 	

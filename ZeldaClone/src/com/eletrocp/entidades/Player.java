@@ -25,9 +25,10 @@ public class Player extends Entity {
     public static double mana = 100, maxMana = 100;
 
     private boolean moved = false;
-    public static boolean knockback = false;
+    private boolean hasWeapon = false;
     public boolean isDamaged = false;
     public boolean right, left, up, down;
+    public static boolean knockback = false;
 
     private BufferedImage[] rightPlayer;
     private BufferedImage[] leftPlayer;
@@ -69,6 +70,8 @@ public class Player extends Entity {
 
         checkCollisionLifePack();
         checkCollisionManaPotion();
+        checkCollisionSword();
+        checkCollisionSepter();
         manaRegen();
 
         Camera.x = Camera.clamp(this.getX() - (Game.WIDTH / 2), 0, World.WIDTH * 16 - Game.WIDTH);
@@ -123,6 +126,16 @@ public class Player extends Entity {
     }
 
     private BufferedImage[] getCurrentAnimation() {
+        switch (dir) {
+            case 0: return rightPlayer;
+            case 1: return leftPlayer;
+            case 2: return upPlayer;
+            case 3: return downPlayer;
+            default: return downPlayer;
+        }
+    }
+    
+    private BufferedImage[] getCurrentAnimationWithWeapon() {
         switch (dir) {
             case 0: return rightPlayer;
             case 1: return leftPlayer;
@@ -201,6 +214,30 @@ public class Player extends Entity {
             }
         }
     }
+    
+    public void checkCollisionSword() {
+        for (int i = 0; i < Game.entities.size(); i++) {
+            Entity atual = Game.entities.get(i);
+            if (atual instanceof Sword) {
+            	if(Entity.isColidding(this, atual)) {
+            	Game.entities.remove(i);
+            	hasWeapon = true;
+            	}
+            }
+        }
+    }
+    
+    public void checkCollisionSepter() {
+        for (int i = 0; i < Game.entities.size(); i++) {
+            Entity atual = Game.entities.get(i);
+            if (atual instanceof Septer) {
+            	if(Entity.isColidding(this, atual)) {
+                    Game.entities.remove(i);
+                    hasWeapon = true;
+            	}
+            }
+        }
+    }
 
     public void render(Graphics g) {
         if (knockback) {
@@ -212,6 +249,9 @@ public class Player extends Entity {
         } else {
             int animationIndex = index % getCurrentAnimation().length;
             g.drawImage(getCurrentAnimation()[animationIndex], this.getX() - Camera.x, this.getY() - Camera.y, null);
+            if(hasWeapon) {
+            	
+            }
         }
     }
 
