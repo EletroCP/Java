@@ -11,9 +11,9 @@ import com.eletrocp.world.World;
 
 public class Player extends Entity {
 
-    // Variáveis de animação e estado
-    private int frames = 0, maxFrames, index;
-    private int damageFrames = 0, maxDamageFrames = 20; // Duração da animação de dano
+    private int frames = 0, maxFrames = 5;
+    private int index = 0;
+    private int damageFrames = 0, maxDamageFrames = 20;
     private int knockbackFrames = 0, maxKnockbackFrames = 25;
     public int right_dir = 0, left_dir = 1, up_dir = 2, down_dir = 3;
     public int dir = 0;
@@ -24,12 +24,11 @@ public class Player extends Entity {
     public double life = 100, maxLife = 100;
     public static double mana = 100, maxMana = 100;
 
-    
     private boolean moved = false;
     public static boolean knockback = false;
     public boolean isDamaged = false;
     public boolean right, left, up, down;
-    
+
     private BufferedImage[] rightPlayer;
     private BufferedImage[] leftPlayer;
     private BufferedImage[] upPlayer;
@@ -46,7 +45,7 @@ public class Player extends Entity {
         downPlayer = new BufferedImage[2];
         knockbackPlayer = new BufferedImage[2];
         playerDamage = new BufferedImage[4];
-        
+
         for (int i = 0; i < 2; i++) {
             rightPlayer[i] = Game.spritesheet.getSprite(64 + (i * 16), 48, 16, 16);
             leftPlayer[i] = Game.spritesheet.getSprite(48 - (i * 16), 48, 16, 16);
@@ -76,34 +75,11 @@ public class Player extends Entity {
         Camera.y = Camera.clamp(this.getY() - (Game.HEIGHT / 2), 0, World.HEIGHT * 16 - Game.HEIGHT);
 
         if (isDamaged) {
-            damageFrames++;
-            
-            if (damageFrames >= maxDamageFrames) {
-                isDamaged = false;
-                damageFrames = 0;
-                index = 0;
-            }
-
-            frames++;
-            if (frames >= maxFrames) {
-                frames = 0;
-                index++;
-                if (index >= playerDamage.length) {
-                    index = 0;
-                }
-            }
+            handleDamageAnimation();
         }
-        
-        if(life <= 0) {
-        	Game.entities.clear();
-        	Game.enemies.clear();
-        	Game.entities = new ArrayList<Entity>();
-        	Game.enemies = new ArrayList<Enemy>();
-        	Game.spritesheet = new SpriteSheet("/spritesheet.png");
-        	Game.player = new Player(0,0,16,16, Game.spritesheet.getSprite(0, 48, 16, 16));
-        	Game.entities.add(Game.player);
-        	Game.world = new World("/map.png");
-        	return;
+
+        if (life <= 0) {
+            resetGame();
         }
     }
 
@@ -167,6 +143,35 @@ public class Player extends Entity {
         }
     }
 
+    private void handleDamageAnimation() {
+        damageFrames++;
+        if (damageFrames >= maxDamageFrames) {
+            isDamaged = false;
+            damageFrames = 0;
+            index = 0;
+        }
+
+        frames++;
+        if (frames >= maxFrames) {
+            frames = 0;
+            index++;
+            if (index >= playerDamage.length) {
+                index = 0;
+            }
+        }
+    }
+
+    private void resetGame() {
+        Game.entities.clear();
+        Game.enemies.clear();
+        Game.entities = new ArrayList<Entity>();
+        Game.enemies = new ArrayList<Enemy>();
+        Game.spritesheet = new SpriteSheet("/spritesheet.png");
+        Game.player = new Player(0, 0, 16, 16, Game.spritesheet.getSprite(0, 48, 16, 16));
+        Game.entities.add(Game.player);
+        Game.world = new World("/map.png");
+    }
+
     public void manaRegen() {
         if (mana < maxMana) {
             mana += 0.015;
@@ -199,13 +204,14 @@ public class Player extends Entity {
 
     public void render(Graphics g) {
         if (knockback) {
-        	
-            g.drawImage(knockbackPlayer[index], this.getX() - Camera.x, this.getY() - Camera.y, null);
+            int knockbackIndex = index % knockbackPlayer.length;
+            g.drawImage(knockbackPlayer[knockbackIndex], this.getX() - Camera.x, this.getY() - Camera.y, null);
         } else if (isDamaged) {
             int damageIndex = index % playerDamage.length;
             g.drawImage(playerDamage[damageIndex], this.getX() - Camera.x, this.getY() - Camera.y, null);
         } else {
-            g.drawImage(getCurrentAnimation()[index], this.getX() - Camera.x, this.getY() - Camera.y, null);
+            int animationIndex = index % getCurrentAnimation().length;
+            g.drawImage(getCurrentAnimation()[animationIndex], this.getX() - Camera.x, this.getY() - Camera.y, null);
         }
     }
 
