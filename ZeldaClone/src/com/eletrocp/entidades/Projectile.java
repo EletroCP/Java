@@ -13,6 +13,7 @@ public class Projectile extends Entity {
     private int dy;
     private int life = 25;
     private int curLife = 0;
+    static int damage = 3;
     
     private double spd = 3;
     
