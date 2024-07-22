@@ -34,6 +34,14 @@ public class Player extends Entity {
     public boolean right, left, up, down;
     public static boolean knockback = false;
     public static boolean hasAtack = false;
+    
+    private boolean attacking = false;
+    private int attackFrames = 0;
+    private int maxAttackFrames = 10;
+    
+    private BufferedImage cetro;
+    private BufferedImage cetroRotatedLeft;
+    private BufferedImage cetroRotatedRight;
 
     private BufferedImage[] rightPlayer;
     private BufferedImage[] leftPlayer;
@@ -69,6 +77,10 @@ public class Player extends Entity {
         leftPlayerSword = new BufferedImage[2];
         rightPlayerCepter = new BufferedImage[2];
         leftPlayerCepter = new BufferedImage[2];
+        
+        cetro = Game.spritesheet.getSprite(64, 80, 16, 16);
+        cetroRotatedLeft = Game.spritesheet.getSprite(80, 96, 16, 16);
+        cetroRotatedRight = Game.spritesheet.getSprite(80, 80, 16, 16);
 
         for (int i = 0; i < 2; i++) {
             rightPlayer[i] = Game.spritesheet.getSprite(64 + (i * 16), 48, 16, 16);
@@ -117,22 +129,22 @@ public class Player extends Entity {
         }
 
         if (currentAttackCooldown > 0) {
-            currentAttackCooldown--; // Decrementa o contador de recarga a cada tick
+            currentAttackCooldown--;
         }
 
         if (hasAtack && hasWeapon && currentAttackCooldown <= 0) {
             hasAtack = false;
-            currentAttackCooldown = attackCooldown; // Reinicia o contador de recarga
+            currentAttackCooldown = attackCooldown;
 
             if (weaponID == 2 && mana >= 10) {
                 mana -= 10;
+                attacking = true;
+                attackFrames = 0;
+                
                 int dx = 0;
                 int dy = 0;
                 int px = 0;
                 int py = 0;
-                
-                int projectileWidth = 12;
-                int projectileHeight = 12;
 
                 if (dir == right_dir) {
                     dx = 1;
@@ -151,6 +163,9 @@ public class Player extends Entity {
                     dx = 0;
                     py = 15;
                 }
+
+                int projectileWidth = 12;
+                int projectileHeight = 12;
 
                 Projectile projectile = new Projectile(this.getX() + px, this.getY() + py, projectileWidth, projectileHeight, null, dx, dy);
                 Game.projectiles.add(projectile);
@@ -208,43 +223,43 @@ public class Player extends Entity {
     }
     
     private int weaponPositionX() {
-    	switch (weaponID) {
-        case 1:
-            switch (dir) {
-                case 0: return this.getX() - Camera.x + 1;
-                case 1: return this.getX() - Camera.x + 1;
-                case 2: return this.getX() - Camera.x - 4;
-                case 3: return this.getX() - Camera.x + 6;
-            }
-        case 2:
-            switch (dir) {
-                case 0: return this.getX() - Camera.x + 1;
-                case 1: return this.getX() - Camera.x + 2;
-                case 2: return this.getX() - Camera.x - 4;
-                case 3: return this.getX() - Camera.x + 5;
-            }
-        default: return 1;
+        switch (weaponID) {
+            case 1:
+                switch (dir) {
+                    case 0: return this.getX() - Camera.x + 1;
+                    case 1: return this.getX() - Camera.x + 1;
+                    case 2: return this.getX() - Camera.x - 4;
+                    case 3: return this.getX() - Camera.x + 6;
+                }
+            case 2:
+                switch (dir) {
+                    case 0: return this.getX() - Camera.x - 1;
+                    case 1: return this.getX() - Camera.x - 1;
+                    case 2: return this.getX() - Camera.x - 4;
+                    case 3: return this.getX() - Camera.x + 4;
+                }
+            default: return 1;
+        }
     }
-    }
-    
+
     private int weaponPositionY() {
-    	switch (weaponID) {
-        case 1:
-            switch (dir) {
-                case 0: return this.getY() - Camera.y - 4;
-                case 1: return this.getY() - Camera.y - 3;
-                case 2: return this.getY() - Camera.y - 4;
-                case 3: return this.getY() - Camera.y - 4;
-            }
-        case 2:
-            switch (dir) {
-                case 0: return this.getY() - Camera.y - 1;
-                case 1: return this.getY() - Camera.y - 1;
-                case 2: return this.getY() - Camera.y - 3;
-                case 3: return this.getY() - Camera.y - 2;
-            }
-        default: return 1;
-    }
+        switch (weaponID) {
+            case 1:
+                switch (dir) {
+                    case 0: return this.getY() - Camera.y - 4;
+                    case 1: return this.getY() - Camera.y - 3;
+                    case 2: return this.getY() - Camera.y - 4;
+                    case 3: return this.getY() - Camera.y - 4;
+                }
+            case 2:
+                switch (dir) {
+                    case 0: return this.getY() - Camera.y - 2;
+                    case 1: return this.getY() - Camera.y - 2;
+                    case 2: return this.getY() - Camera.y - 3;
+                    case 3: return this.getY() - Camera.y - 3;
+                }
+            default: return 1;
+        }
     }
     
     private BufferedImage[] getCurrentAnimationWithWeapon() {
@@ -266,27 +281,7 @@ public class Player extends Entity {
             default: return getCurrentAnimation();
         }
     }
-    /*
-    private BufferedImage[] getCurrentAnimationWithWeaponAtack() {
-        switch (weaponID) {
-            case 1:
-                switch (dir) {
-                    case 0: return rightPlayerSword;
-                    case 1: return leftPlayerSword;
-                    case 2: return upPlayer;
-                    case 3: return downPlayer;
-                }
-            case 2:
-                switch (dir) {
-                    case 0: return rightPlayerCepter;
-                    case 1: return leftPlayerCepter;
-                    case 2: return upPlayer;
-                    case 3: return downPlayer;
-                }
-            default: return getCurrentAnimation();
-        }
-    }
-	*/
+
     private void animate(BufferedImage[] animationFrames) {
         frames++;
         if (frames == maxFrames) {
@@ -329,7 +324,7 @@ public class Player extends Entity {
 
     public void manaRegen() {
         if (mana < maxMana) {
-            mana += 0.015;
+           mana += 0.015;
         }
     }
 
@@ -393,12 +388,42 @@ public class Player extends Entity {
         } else {
             int animationIndex = index % getCurrentAnimation().length;
             g.drawImage(getCurrentAnimation()[animationIndex], this.getX() - Camera.x, this.getY() - Camera.y, null);
+
             if (hasWeapon) {
-                int weaponIndex = index % getCurrentAnimationWithWeapon().length;
-                g.drawImage(getCurrentAnimationWithWeapon()[weaponIndex], weaponPositionX(), weaponPositionY(), null);
+                if (attacking) {
+                    int weaponX = weaponPositionX();
+                    int weaponY = weaponPositionY();
+                    BufferedImage cetroImage = cetro;
+
+                    if (dir == right_dir) {
+                        weaponX += 6;
+                        weaponY += 5;
+                        cetroImage = cetroRotatedRight;
+                    } else if (dir == left_dir) {
+                        weaponX -= 6;
+                        weaponY += 4;
+                        cetroImage = cetroRotatedLeft;
+                    } else if (dir == up_dir) {
+                        weaponY -= 6;
+                    } else if (dir == down_dir) {
+                    	weaponY += 3;
+                    }
+
+                    g.drawImage(cetroImage, weaponX, weaponY, null);
+
+                    attackFrames++;
+                    if (attackFrames >= maxAttackFrames) {
+                        attacking = false;
+                    }
+                } else {
+                    int weaponIndex = index % getCurrentAnimationWithWeapon().length;
+                    g.drawImage(getCurrentAnimationWithWeapon()[weaponIndex], weaponPositionX(), weaponPositionY(), null);
+                }
             }
         }
     }
+
+
 
     public void applyKnockback(double enemyX, double enemyY) {
         double angle = Math.atan2(y - enemyY, x - enemyX);
