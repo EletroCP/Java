@@ -19,6 +19,9 @@ public class Projectile extends Entity {
     public Projectile(double x, double y, int width, int height, BufferedImage sprite, int dx, int dy) {
         super(x, y, width, height, sprite);
         
+        this.width = width;
+        this.height = height;
+        
         this.dx = dx;
         this.dy = dy;
         
@@ -55,6 +58,6 @@ public class Projectile extends Entity {
     }
     
     public void render(Graphics g) {
-        g.drawImage(cepterProjectile[0], (int) x - Camera.x, (int) y - Camera.y, null);
+        g.drawImage(cepterProjectile[0], (int) x - Camera.x, (int) y - Camera.y, width, height, null);
     }
 }

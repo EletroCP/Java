@@ -130,6 +130,9 @@ public class Player extends Entity {
                 int dy = 0;
                 int px = 0;
                 int py = 0;
+                
+                int projectileWidth = 12;
+                int projectileHeight = 12;
 
                 if (dir == right_dir) {
                     dx = 1;
@@ -149,7 +152,7 @@ public class Player extends Entity {
                     py = 15;
                 }
 
-                Projectile projectile = new Projectile(this.getX() + px, this.getY() + py, 3, 3, null, dx, dy);
+                Projectile projectile = new Projectile(this.getX() + px, this.getY() + py, projectileWidth, projectileHeight, null, dx, dy);
                 Game.projectiles.add(projectile);
             }
         }
