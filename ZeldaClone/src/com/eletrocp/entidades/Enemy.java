@@ -17,6 +17,7 @@ public class Enemy extends Entity {
 	public int up_dir = 2;
 	public int down_dir = 3;
 	public int dir = 0;
+	private int life = 20;
 
 	private double spd = 0.2;
 	
@@ -96,6 +97,30 @@ public class Enemy extends Entity {
 				// gameover
 			}
 		}
+		
+		collidingProjectile();
+		
+		if(life <= 0) {
+			destroySelf();
+		}
+	}
+	
+	public void destroySelf() {
+		Game.entities.remove(this);
+		return;
+	}
+	
+	public void collidingProjectile() {
+		for(int i = 0; i < Game.projectiles.size(); i += 1) {
+			Entity e = Game.projectiles.get(i);
+			if(e instanceof Projectile) {
+				if(Entity.isColidding(this, e)) {
+					life -= Projectile.damage;
+					Game.projectiles.remove(e);
+					return;
+				}
+			}
+		}
 	}
 
 	public boolean isColiddingWithPlayer() {
@@ -117,7 +142,6 @@ public class Enemy extends Entity {
 				return true;
 			}
 		}
-
 		return false;
 	}
 
