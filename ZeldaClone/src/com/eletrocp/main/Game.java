@@ -35,15 +35,20 @@ private static final long serialVersionUID = 1L;
 	public static int FPS;
 	private final int SCALE  = 3;
 	
+	private int CUR_LEVEL = 1, MAX_LEVEL = 2;	
 	private BufferedImage image;
 	
 	public static List<Entity> entities;
 	public static List<Enemy> enemies;
 	public static List<Projectile> projectiles;
+	public static List<Integer> inventory = new ArrayList<>();
 	public static SpriteSheet spritesheet;
 	public static World world;
 	
 	public static Player player;
+	
+	private static int savedWeaponID = 0;
+    private static boolean savedHasWeapon = false;
 	
 	public static Random rand;
 	
@@ -62,7 +67,7 @@ private static final long serialVersionUID = 1L;
 		spritesheet = new SpriteSheet("/spritesheet.png");
 		player = new Player(0,0,16,16, spritesheet.getSprite(0, 48, 16, 16));
 		entities.add(player);
-		world = new World("/map.png");
+		world = new World("/level1.png");
 		
 		
 		this.addKeyListener(this);
@@ -101,16 +106,37 @@ private static final long serialVersionUID = 1L;
 		game.start();
 	}
 	
-	public void tick() {
-		for(int i = 0; i < entities.size(); i +=1) {
-			Entity e = entities.get(i);
-			e.tick();
-		}
-		
-		for(int i = 0; i < projectiles.size() ; i +=1) {
-			projectiles.get(i).tick();
-		}
-	}
+	public static void savePlayerState() {
+        savedWeaponID = Player.weaponID;
+        savedHasWeapon = player.hasWeapon;
+    }
+
+    public static void restorePlayerState() {
+        Player.weaponID = savedWeaponID;
+        player.hasWeapon = savedHasWeapon;
+    }
+
+    public void tick() {
+        for(int i = 0; i < entities.size(); i +=1) {
+            Entity e = entities.get(i);
+            e.tick();
+        }
+        
+        for(int i = 0; i < projectiles.size() ; i +=1) {
+            projectiles.get(i).tick();
+        }
+        
+        if(enemies.size() == 0) {
+            savePlayerState();
+            CUR_LEVEL +=1;
+            if(CUR_LEVEL > MAX_LEVEL) {
+                CUR_LEVEL = 1;
+            }
+            String newWorld = "level" + CUR_LEVEL + ".png";
+            World.restartGame(newWorld);
+            restorePlayerState();
+        }
+    }
 	
 	public void render() {
 		BufferStrategy bs = this.getBufferStrategy();
@@ -169,30 +195,38 @@ private static final long serialVersionUID = 1L;
 		stop();
 	}
 
-	@Override
 	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
 	public void keyPressed(KeyEvent e) {
-		if(e.getKeyCode() == KeyEvent.VK_D) {
-			player.right = true;
-		} else if(e.getKeyCode() == KeyEvent.VK_A) {
-			player.left = true;
-		}
-		
-		if(e.getKeyCode() == KeyEvent.VK_W) {
-			player.up = true;
-		} else if (e.getKeyCode() == KeyEvent.VK_S) {
-			player.down = true;
-		}
-		
-		if(e.getKeyCode() == KeyEvent.VK_SPACE) {
-			Player.hasAtack = true;
-		}
+	    if(e.getKeyCode() == KeyEvent.VK_D) {
+	        player.right = true;
+	    } else if(e.getKeyCode() == KeyEvent.VK_A) {
+	        player.left = true;
+	    }
+	    
+	    if(e.getKeyCode() == KeyEvent.VK_W) {
+	        player.up = true;
+	    } else if (e.getKeyCode() == KeyEvent.VK_S) {
+	        player.down = true;
+	    }
+	    
+	    if(e.getKeyCode() == KeyEvent.VK_SPACE) {
+	        Player.hasAtack = true;
+	    }
+	    
+	    if(e.getKeyCode() == KeyEvent.VK_1 && Game.inventory.contains(1)) {
+	        Player.weaponID = 1;
+	        player.hasWeapon = true;
+	    }
+	    
+	    if(e.getKeyCode() == KeyEvent.VK_2 && Game.inventory.contains(2)) {
+	        Player.weaponID = 2;
+	        player.hasWeapon = true;
+	    }
 	}
+
 
 	@Override
 	public void keyReleased(KeyEvent e) {

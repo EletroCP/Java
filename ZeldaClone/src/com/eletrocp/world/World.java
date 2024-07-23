@@ -11,8 +11,10 @@ import com.eletrocp.entidades.Entity;
 import com.eletrocp.entidades.Javali;
 import com.eletrocp.entidades.Lifekit;
 import com.eletrocp.entidades.ManaPotion;
+import com.eletrocp.entidades.Player;
 import com.eletrocp.entidades.Septer;
 import com.eletrocp.entidades.Sword;
+import com.eletrocp.graficos.SpriteSheet;
 import com.eletrocp.main.Game;
 
 public class World {
@@ -130,6 +132,19 @@ public class World {
 	            || tiles[x3 + (y3 * World.WIDTH)] instanceof WallTile
 	            || tiles[x4 + (y4 * World.WIDTH)] instanceof WallTile);
 	}
+	
+    public static void restartGame(String level) {
+        Game.entities.clear();
+        Game.enemies.clear();
+        Game.projectiles.clear();
+
+        Game.spritesheet = new SpriteSheet("/spritesheet.png");
+        Game.player = new Player(0, 0, 16, 16, Game.spritesheet.getSprite(0, 48, 16, 16));
+        Game.entities.add(Game.player);
+        Game.world = new World("/"+ level);
+        
+        Game.restorePlayerState();
+    }
 		
 	public void render(Graphics g) {
 		
