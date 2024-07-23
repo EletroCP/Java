@@ -18,11 +18,14 @@ public class Enemy extends Entity {
 	public int down_dir = 3;
 	public int dir = 0;
 	private int life = 20;
+	private int damageFrames = 10, damageCurrent = 0;
 
 	private double spd = 0.2;
 	
 	private boolean moved = false;
 	private boolean push = true;
+	private boolean isDamaged = false;
+	
 
 
 	private BufferedImage[] rightEnemy;
@@ -103,6 +106,14 @@ public class Enemy extends Entity {
 		if(life <= 0) {
 			destroySelf();
 		}
+		
+		if(isDamaged) {
+			damageCurrent +=1;
+			if(damageCurrent == damageFrames) {
+				damageCurrent = 0;
+				isDamaged = false;
+			}
+		}
 	}
 	
 	public void destroySelf() {
@@ -115,6 +126,7 @@ public class Enemy extends Entity {
 			Entity e = Game.projectiles.get(i);
 			if(e instanceof Projectile) {
 				if(Entity.isColidding(this, e)) {
+					isDamaged = true;
 					life -= Projectile.damage;
 					Game.projectiles.remove(e);
 					return;
@@ -146,16 +158,20 @@ public class Enemy extends Entity {
 	}
 
 	public void render(Graphics g) {
-		if (dir == right_dir) {
-			g.drawImage(rightEnemy[index], this.getX() - Camera.x, this.getY() - Camera.y, null);
-		} else if (dir == left_dir) {
-			g.drawImage(leftEnemy[index], this.getX() - Camera.x, this.getY() - Camera.y, null);
-		}
-
-		if (dir == up_dir) {
-			g.drawImage(upEnemy[index], this.getX() - Camera.x, this.getY() - Camera.y, null);
-		} else if (dir == down_dir) {
-			g.drawImage(downEnemy[index], this.getX() - Camera.x, this.getY() - Camera.y, null);
+		if(!isDamaged) {			
+			if (dir == right_dir) {
+				g.drawImage(rightEnemy[index], this.getX() - Camera.x, this.getY() - Camera.y, null);
+			} else if (dir == left_dir) {
+				g.drawImage(leftEnemy[index], this.getX() - Camera.x, this.getY() - Camera.y, null);
+			}
+			
+			if (dir == up_dir) {
+				g.drawImage(upEnemy[index], this.getX() - Camera.x, this.getY() - Camera.y, null);
+			} else if (dir == down_dir) {
+				g.drawImage(downEnemy[index], this.getX() - Camera.x, this.getY() - Camera.y, null);
+			} 
+		} else {
+			g.drawImage(Entity.ENEMY_FEEDBACK, this.getX() - Camera.x, this.getY() - Camera.y, null);
 		}
 	}
 }

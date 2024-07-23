@@ -43,6 +43,34 @@ public class World {
 						tiles[xx + (yy * WIDTH)] = new WallTile(xx * TILE_SIZE, yy * TILE_SIZE, Tile.TILE_WALL);
 						
 					
+					} else if (pixelAtual == 0xff216e21) { // start
+						tiles[xx + (yy * WIDTH)] = new PathTile(xx * TILE_SIZE, yy * TILE_SIZE, Tile.TILE_GRASS_UP_DOWN);
+						
+					
+					} else if (pixelAtual == 0xff2b5f34) {
+						tiles[xx + (yy * WIDTH)] = new PathTile(xx * TILE_SIZE, yy * TILE_SIZE, Tile.TILE_GRASS_LEFT_RIGHT);
+						
+					
+					} else if (pixelAtual == 0xff225a2c) {
+						tiles[xx + (yy * WIDTH)] = new PathTile(xx * TILE_SIZE, yy * TILE_SIZE, Tile.TILE_GRASS_PLUS);
+						
+					
+					} else if (pixelAtual == 0xff195523) {
+						tiles[xx + (yy * WIDTH)] = new PathTile(xx * TILE_SIZE, yy * TILE_SIZE, Tile.TILE_DOWN_TO_LEFT);
+						
+					
+					} else if (pixelAtual == 0xff267d36) {
+						tiles[xx + (yy * WIDTH)] = new PathTile(xx * TILE_SIZE, yy * TILE_SIZE, Tile.TILE_LEFT_TO_UP);
+						
+					
+					} else if (pixelAtual == 0xff173c1d) {
+						tiles[xx + (yy * WIDTH)] = new PathTile(xx * TILE_SIZE, yy * TILE_SIZE, Tile.TILE_UP_TO_RIGHT);
+						
+					
+					} else if (pixelAtual == 0xff009038) {
+						tiles[xx + (yy * WIDTH)] = new PathTile(xx * TILE_SIZE, yy * TILE_SIZE, Tile.TILE_RIGHT_TO_DOWN);
+						
+					// final
 					} else if (pixelAtual == 0xff5fcde4) {
 						
 						Game.player.setX(xx * TILE_SIZE);
