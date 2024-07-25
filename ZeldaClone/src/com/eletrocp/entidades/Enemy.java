@@ -23,8 +23,8 @@ public class Enemy extends Entity {
 	private double spd = 0.2;
 	
 	private boolean moved = false;
-	private boolean push = true;
-	private boolean isDamaged = false;
+	private boolean push = false;
+	protected boolean isDamaged = false;
 	
 
 

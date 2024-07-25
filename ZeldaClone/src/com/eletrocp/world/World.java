@@ -106,6 +106,7 @@ public class World {
 					} else  if (pixelAtual == 0xffaa7256) {
 						Javali en = new Javali(xx * TILE_SIZE, yy * TILE_SIZE, TILE_SIZE, TILE_SIZE, Entity.JAVALI_ENT);
 						Game.entities.add(en);
+						Game.enemies.add(en);
 					}
 				}
 			}
