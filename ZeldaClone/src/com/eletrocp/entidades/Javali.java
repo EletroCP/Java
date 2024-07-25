@@ -13,7 +13,8 @@ public class Javali extends Enemy {
     private boolean moved = false;
     private boolean push = true;
     private boolean canRun = true;
-    private int life;
+    public int life;
+    public int maxLife;
     
     protected int maskX;
     protected int maskY;
@@ -21,7 +22,7 @@ public class Javali extends Enemy {
     protected int maskH;
     
     private int frames = 0, maxFrames = 5, index = 0, maxIndex = 1;
-    private double spd = 1;
+    private double spd = 0;
     private static final double RUN_DISTANCE = 60;
     
     private static int cooldown = 10*60, curCooldown = 0;
@@ -32,12 +33,14 @@ public class Javali extends Enemy {
         super(x, y, width, height, sprite);
         
         this.life = 100;
+        this.maxLife = 100;
         this.maskX = 0;
         this.maskY = 0;
         this.maskW = width;
         this.maskH = height;
         
-        Game.hasBoos = true;
+        Game.hasBoss = true;
+
     }
     
     public void collidingProjectile() {
@@ -83,7 +86,7 @@ public class Javali extends Enemy {
         if (distance < RUN_DISTANCE && canRun) {
             this.spd = 1.5;
         } else {
-            this.spd = 0.3;
+            this.spd = 0;
         }
     }
     
@@ -150,6 +153,9 @@ public class Javali extends Enemy {
         collidingProjectile();
         checkCooldown();
         startRunning();
+        
+        Game.bossLife = this.life;
+        Game.bossMaxLife = this.maxLife;
     }
     
     public void render(Graphics g) {

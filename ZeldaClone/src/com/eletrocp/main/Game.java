@@ -34,6 +34,7 @@ private static final long serialVersionUID = 1L;
 	public static int frames = 0;
 	public static int FPS;
 	private final int SCALE  = 3;
+	public static int bossLife, bossMaxLife;
 	
 	private int CUR_LEVEL = 1, MAX_LEVEL = 3;	
 	private BufferedImage image;
@@ -51,7 +52,7 @@ private static final long serialVersionUID = 1L;
 	private static double savedLife = 0;
 	private static double savedMana = 0;
     private static boolean savedHasWeapon = false;
-    public static boolean hasBoos = false;
+    public static boolean hasBoss = false;
     
 	
 	public static Random rand;
