@@ -48,7 +48,10 @@ private static final long serialVersionUID = 1L;
 	public static Player player;
 	
 	private static int savedWeaponID = 0;
+	private static double savedLife = 0;
+	private static double savedMana = 0;
     private static boolean savedHasWeapon = false;
+    
 	
 	public static Random rand;
 	
@@ -109,11 +112,16 @@ private static final long serialVersionUID = 1L;
 	public static void savePlayerState() {
         savedWeaponID = Player.weaponID;
         savedHasWeapon = player.hasWeapon;
+        savedLife = player.life;
+        savedMana = Player.mana;
     }
 
     public static void restorePlayerState() {
         Player.weaponID = savedWeaponID;
         player.hasWeapon = savedHasWeapon;
+        player.life = savedLife;
+        Player.mana = savedMana;
+        
     }
 
     public void tick() {

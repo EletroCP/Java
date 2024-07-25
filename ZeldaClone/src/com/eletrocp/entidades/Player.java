@@ -22,9 +22,10 @@ public class Player extends Entity {
 
     private double knockbackDistance = 60;
     private double knockbackX = 0, knockbackY = 0;
-    public double spd = 1.4;
+    public double spd = 1.2;
     public double life = 100, maxLife = 100;
-    public static double mana = 100, maxMana = 100;
+    public static double mana = 100;
+	public static double maxMana = 100;
     
 
     private boolean moved = false;
@@ -367,8 +368,7 @@ public class Player extends Entity {
 
     public void manaRegen() {
         if (mana < maxMana) {
-           // mana += 0.015;
-        	mana += 3;
+           mana += 0.015;
         }
     }
 
