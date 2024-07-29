@@ -6,7 +6,7 @@ import java.awt.Graphics;
 
 public class Menu {
 	
-	public String[] options = {"Novo Jogo", "Carregar Jogo", "Sair"};
+	public String[] options = {"Novo Jogo", "Salvar Jogo","Carregar Jogo", "Sair"};
 	
 	public int currentOption = 0;
 	public int maxOption = options.length - 1;
@@ -15,6 +15,7 @@ public class Menu {
 	
 	public void tick() {
 		if(up) {
+			up = false;
 			currentOption -= 1;
 			if(currentOption < 0) {
 				currentOption = 0;
@@ -22,6 +23,7 @@ public class Menu {
 		}
 		
 		if(down) {
+			down = false;
 			currentOption += 1;
 			if(currentOption > maxOption) {
 				currentOption = 0;
@@ -49,5 +51,16 @@ public class Menu {
 		//Sair
 		g.setFont(new Font("arial", Font.BOLD, 26));
 		g.drawString("Sair", (Game.WIDTH * Game.SCALE) / 2 - 300, (Game.HEIGHT * Game.SCALE) / 2 + 70);
+		
+		switch(options[currentOption]) {
+		case "Salvar Jogo": g.drawString(">", (Game.WIDTH * Game.SCALE) / 2 - 330, (Game.HEIGHT * Game.SCALE) / 2 - 10);
+			break;
+        case "Carregar Jogo": g.drawString(">", (Game.WIDTH * Game.SCALE) / 2 - 330, (Game.HEIGHT * Game.SCALE) / 2 + 30);
+        	break;
+        case "Sair": g.drawString(">", (Game.WIDTH * Game.SCALE) / 2 - 330, (Game.HEIGHT * Game.SCALE) / 2 + 70);
+    		break;
+        default: g.drawString(">", (Game.WIDTH * Game.SCALE) / 2 - 330, (Game.HEIGHT * Game.SCALE) / 2 - 50);
+    		break;
+		}
 	}
 }
