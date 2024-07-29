@@ -128,6 +128,7 @@ public class Enemy extends Entity {
 			if(e instanceof Projectile) {
 				if(Entity.isColidding(this, e)) {
 					isDamaged = true;
+					System.out.println(Projectile.damage);
 					life -= Projectile.damage;
 					Game.projectiles.remove(e);
 					return;

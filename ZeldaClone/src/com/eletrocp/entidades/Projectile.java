@@ -24,7 +24,7 @@ public class Projectile extends Entity {
         this.width = width;
         this.height = height;
         this.life = life;
-        this.damage = damage;
+        Projectile.damage = damage;
         
         
         this.dx = dx;

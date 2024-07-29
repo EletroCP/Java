@@ -2,8 +2,6 @@ package com.eletrocp.entidades;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import com.eletrocp.graficos.SpriteSheet;
 import com.eletrocp.main.Game;
 import com.eletrocp.world.Camera;
 import com.eletrocp.world.World;
@@ -354,17 +352,6 @@ public class Player extends Entity {
                 index = 0;
             }
         }
-    }
-
-    private void resetGame() {
-        Game.entities.clear();
-        Game.enemies.clear();
-        Game.entities = new ArrayList<Entity>();
-        Game.enemies = new ArrayList<Enemy>();
-        Game.spritesheet = new SpriteSheet("/spritesheet.png");
-        Game.entities.add(Game.player);
-        Game.world = new World("/map.png");
-
     }
 
     public void manaRegen() {

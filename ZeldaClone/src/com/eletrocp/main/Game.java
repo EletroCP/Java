@@ -3,9 +3,7 @@ package com.eletrocp.main;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
@@ -28,7 +26,6 @@ public class Game extends Canvas implements Runnable, KeyListener {
 	
 private static final long serialVersionUID = 1L;
 	
-	public static JFrame frame;
 	private Thread thread;
 	private boolean isRunning;
 	public final static int WIDTH = 240;
@@ -53,9 +50,10 @@ private static final long serialVersionUID = 1L;
 	private static int savedWeaponID = 0;
 	private static double savedLife = 0;
 	private static double savedMana = 0;
-    private static boolean savedHasWeapon = false;
-    public static boolean hasBoss = false;
-    
+	private static boolean savedHasWeapon = false;
+	private static boolean resetGame = false;
+	public static boolean hasBoss = false;
+	
 	
 	public static Random rand;
 	
@@ -133,9 +131,6 @@ private static final long serialVersionUID = 1L;
     }
 
     public void tick() {
-    	if(gameState == "NORMAL") {
-    		
-    	
         for(int i = 0; i < entities.size(); i +=1) {
             Entity e = entities.get(i);
             e.tick();
@@ -154,19 +149,7 @@ private static final long serialVersionUID = 1L;
             String newWorld = "level" + CUR_LEVEL + ".png";
             World.restartGame(newWorld);
             restorePlayerState();
-	        }
-		    } else if(gameState == "GAMEOVER") {
-				framesGameOver += 1;
-				System.out.println(framesGameOver);
-				if(framesGameOver == 25) {
-					framesGameOver = 0;
-					if(showMessageGameOver) {
-						showMessageGameOver = false;
-					} else {
-						showMessageGameOver = true;
-					}
-				}
-	        }
+        }
     }
 	
 	public void render() {
@@ -193,18 +176,6 @@ private static final long serialVersionUID = 1L;
 		
 		g = bs.getDrawGraphics();
 		g.drawImage(image, 0, 0, WIDTH*SCALE, HEIGHT*SCALE, null);
-		if(gameState == "GAMEOVER") {
-			Graphics2D g2 = (Graphics2D) g;
-			g2.setColor(new Color (0,0,0, 100));
-			g2.fillRect(0, 0, WIDTH * SCALE, HEIGHT * SCALE);
-			g.setFont(new Font("arial", Font.BOLD, 60));
-			g.setColor(Color.black);
-			g.drawString("Game Over", (WIDTH*SCALE) / 2 - 150, (HEIGHT * SCALE) / 2);
-			g.setFont(new Font("arial", Font.BOLD, 30));
-			if(showMessageGameOver) {
-				g.drawString("> Pressione Enter para reiniciar <", (WIDTH*SCALE) / 2 - 220, (HEIGHT * SCALE) / 2 + 35);				
-			}
-		}
 		bs.show();
 	}
 
