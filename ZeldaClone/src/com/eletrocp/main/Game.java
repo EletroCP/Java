@@ -3,7 +3,9 @@ package com.eletrocp.main;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
@@ -58,6 +60,8 @@ private static final long serialVersionUID = 1L;
 	public static Random rand;
 	
 	public UI ui;
+	
+	public static String gameState = "GAMEOVER";
 	
 	public Game() {
 		rand = new Random();
@@ -127,6 +131,9 @@ private static final long serialVersionUID = 1L;
     }
 
     public void tick() {
+    	if(gameState == "NORMAL") {
+    		
+    	
         for(int i = 0; i < entities.size(); i +=1) {
             Entity e = entities.get(i);
             e.tick();
@@ -145,7 +152,10 @@ private static final long serialVersionUID = 1L;
             String newWorld = "level" + CUR_LEVEL + ".png";
             World.restartGame(newWorld);
             restorePlayerState();
-        }
+	        } else if(gameState == "GAMEOVER") {
+	        	System.out.println("Game Over");
+	        }
+	    }
     }
 	
 	public void render() {
@@ -172,6 +182,16 @@ private static final long serialVersionUID = 1L;
 		
 		g = bs.getDrawGraphics();
 		g.drawImage(image, 0, 0, WIDTH*SCALE, HEIGHT*SCALE, null);
+		if(gameState == "GAMEOVER") {
+			Graphics2D g2 = (Graphics2D) g;
+			g2.setColor(new Color (0,0,0, 100));
+			g2.fillRect(0, 0, WIDTH * SCALE, HEIGHT * SCALE);
+			g.setFont(new Font("arial", Font.BOLD, 60));
+			g.setColor(Color.black);
+			g.drawString("Game Over", (WIDTH*SCALE) / 2 - 130, (HEIGHT * SCALE) / 2);
+			g.setFont(new Font("arial", Font.BOLD, 30));
+			g.drawString(">Pressione Enter para reiniciar<", (WIDTH*SCALE) / 2 - 200, (HEIGHT * SCALE) / 2 + 35);
+		}
 		bs.show();
 	}
 

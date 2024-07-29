@@ -133,7 +133,8 @@ public class Player extends Entity {
         }
 
         if (life <= 0) {
-            resetGame();
+        	Game.gameState = "GAMEOVER";
+            // resetGame();
         }
 
         if (currentAttackCooldown > 0) {
