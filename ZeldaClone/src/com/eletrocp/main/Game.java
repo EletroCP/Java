@@ -62,7 +62,7 @@ private static final long serialVersionUID = 1L;
 	
 	public UI ui;
 	
-	public static String gameState = "NORMAL";
+	public static String gameState = "MENU";
 
 	private boolean showMessageGameOver = true;
 	private int framesGameOver = 0;
@@ -199,6 +199,8 @@ private static final long serialVersionUID = 1L;
 		            World.restartGame(newWorld);
 				}
 			}
+		} else if(gameState == "MENU") {
+			
 		}
     }
 	
