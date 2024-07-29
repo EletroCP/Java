@@ -33,8 +33,8 @@ private static final long serialVersionUID = 1L;
 	public final static int HEIGHT = 160;
 	public static int frames = 0;
 	public static int FPS;
-	private final int SCALE  = 3;
-	public static int bossLife, bossMaxLife;
+	public final static int SCALE  = 3;
+	public static int bossLife = 100, bossMaxLife = 100;
 	
 	private int CUR_LEVEL = 1, MAX_LEVEL = 3;	
 	private BufferedImage image;
