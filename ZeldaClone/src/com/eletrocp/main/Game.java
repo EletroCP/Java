@@ -55,14 +55,15 @@ private static final long serialVersionUID = 1L;
 	private static double savedMana = 0;
 	private static boolean savedHasWeapon = false;
 	private static boolean resetGame = false;
-	public static boolean hasBoss = false;
-	
+	private static boolean inventoryIsOpen = false;
+	public static boolean hasBoss;
 	
 	public static Random rand;
 	
 	public UI ui;
 	
 	public static String gameState = "NORMAL";
+
 	private boolean showMessageGameOver = true;
 	private int framesGameOver = 0;
 	
@@ -131,6 +132,32 @@ private static final long serialVersionUID = 1L;
         player.life = savedLife;
         Player.mana = savedMana;
         
+    }
+    
+    private void nextWeapon() {
+        int inventorySize = inventory.size();
+        int currentWeaponIndex = inventory.indexOf(Player.weaponID);
+
+        if (inventorySize > 0) {
+            if (currentWeaponIndex == -1 || currentWeaponIndex == inventorySize - 1) {
+                Player.weaponID = inventory.get(0);
+            } else {
+                Player.weaponID = inventory.get(currentWeaponIndex + 1);
+            }
+        }
+    }
+    
+    private void previousWeapon() {
+        int inventorySize = inventory.size();
+        int currentWeaponIndex = inventory.indexOf(Player.weaponID);
+
+        if (inventorySize > 0) {
+            if (currentWeaponIndex == -1 || currentWeaponIndex == 0) {
+                Player.weaponID = inventory.get(inventorySize - 1);
+            } else {
+                Player.weaponID = inventory.get(currentWeaponIndex - 1);
+            }
+        }
     }
 
     public void tick() {
@@ -211,6 +238,14 @@ private static final long serialVersionUID = 1L;
 				g.drawString("> Pressione Enter para reiniciar <", (WIDTH*SCALE) / 2 - 220, (HEIGHT * SCALE) / 2 + 35);				
 			}
 		}
+		
+		if(inventoryIsOpen) {
+			Graphics2D g2 = (Graphics2D) g;
+			g2.setColor(new Color (0,0,0, 100));
+			g2.fillRect(0, 0, WIDTH * SCALE, HEIGHT * SCALE);
+			g.setFont(new Font("arial", Font.BOLD, 60));
+			g.drawString("Inventario", (WIDTH*SCALE) / 2 - 150, (HEIGHT * SCALE) / 2);
+		}
 		bs.show();
 	}
 
@@ -277,6 +312,22 @@ private static final long serialVersionUID = 1L;
 	    
 	    if(e.getKeyCode() == KeyEvent.VK_ENTER) {
 	    	resetGame = true;
+	    }
+	    
+	    if(e.getKeyCode() == KeyEvent.VK_I) {
+	    	if(!inventoryIsOpen) {
+	    		inventoryIsOpen = true;
+	    	} else {
+	    		inventoryIsOpen = false;
+	    	}
+	    }
+	    
+	    if(e.getKeyCode() == KeyEvent.VK_E) {
+	    	nextWeapon();
+	    }
+	    
+	    if(e.getKeyCode() == KeyEvent.VK_Q) {
+	    	previousWeapon();
 	    }
 	}
 
