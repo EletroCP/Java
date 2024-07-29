@@ -3,7 +3,9 @@ package com.eletrocp.main;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
@@ -26,6 +28,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 	
 private static final long serialVersionUID = 1L;
 	
+	public static JFrame frame;
 	private Thread thread;
 	private boolean isRunning;
 	public final static int WIDTH = 240;
@@ -59,7 +62,7 @@ private static final long serialVersionUID = 1L;
 	
 	public UI ui;
 	
-	public static String gameState = "GAMEOVER";
+	public static String gameState = "NORMAL";
 	private boolean showMessageGameOver = true;
 	private int framesGameOver = 0;
 	
@@ -131,28 +134,48 @@ private static final long serialVersionUID = 1L;
     }
 
     public void tick() {
-        for(int i = 0; i < entities.size(); i +=1) {
-            Entity e = entities.get(i);
-            e.tick();
-        }
-        
-        for(int i = 0; i < projectiles.size() ; i +=1) {
-            projectiles.get(i).tick();
-        }
-        
-        if(enemies.size() == 0) {
-            savePlayerState();
-            CUR_LEVEL +=1;
-            if(CUR_LEVEL > MAX_LEVEL) {
-                CUR_LEVEL = 1;
-            }
-            String newWorld = "level" + CUR_LEVEL + ".png";
-            World.restartGame(newWorld);
-            restorePlayerState();
-        }
+    	if(gameState == "NORMAL") {
+    		for(int i = 0; i < entities.size(); i +=1) {
+    			Entity e = entities.get(i);
+    			e.tick();
+    		}
+    		
+    		for(int i = 0; i < projectiles.size() ; i +=1) {
+    			projectiles.get(i).tick();
+    		}
+    		
+    		if(enemies.size() == 0) {
+    			savePlayerState();
+    			CUR_LEVEL +=1;
+    			if(CUR_LEVEL > MAX_LEVEL) {
+    				CUR_LEVEL = 1;
+    			}
+    			String newWorld = "level" + CUR_LEVEL + ".png";
+    			World.restartGame(newWorld);
+    			restorePlayerState();
+    		} 
+    	} else if (gameState == "GAMEOVER") {
+			framesGameOver += 1;
+			if(framesGameOver == 25) {
+				framesGameOver = 0;
+				if(showMessageGameOver) {
+					showMessageGameOver = false;
+				} else {
+					showMessageGameOver = true;
+				}
+				
+				if(resetGame) {
+					resetGame = false;
+					gameState = "NORMAL";
+					CUR_LEVEL = 1;
+					String newWorld = "level" + CUR_LEVEL + ".png";
+		            World.restartGame(newWorld);
+				}
+			}
+		}
     }
 	
-	public void render() {
+    public void render() {
 		BufferStrategy bs = this.getBufferStrategy();
 		if(bs == null) {
 			this.createBufferStrategy(3);
@@ -176,6 +199,18 @@ private static final long serialVersionUID = 1L;
 		
 		g = bs.getDrawGraphics();
 		g.drawImage(image, 0, 0, WIDTH*SCALE, HEIGHT*SCALE, null);
+		if(gameState == "GAMEOVER") {
+			Graphics2D g2 = (Graphics2D) g;
+			g2.setColor(new Color (0,0,0, 100));
+			g2.fillRect(0, 0, WIDTH * SCALE, HEIGHT * SCALE);
+			g.setFont(new Font("arial", Font.BOLD, 60));
+			g.setColor(Color.black);
+			g.drawString("Game Over", (WIDTH*SCALE) / 2 - 150, (HEIGHT * SCALE) / 2);
+			g.setFont(new Font("arial", Font.BOLD, 30));
+			if(showMessageGameOver) {
+				g.drawString("> Pressione Enter para reiniciar <", (WIDTH*SCALE) / 2 - 220, (HEIGHT * SCALE) / 2 + 35);				
+			}
+		}
 		bs.show();
 	}
 
@@ -238,6 +273,10 @@ private static final long serialVersionUID = 1L;
 	    if(e.getKeyCode() == KeyEvent.VK_2 && Game.inventory.contains(2)) {
 	        Player.weaponID = 2;
 	        player.hasWeapon = true;
+	    }
+	    
+	    if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+	    	resetGame = true;
 	    }
 	}
 

@@ -143,8 +143,6 @@ public class World {
         Game.player = new Player(0, 0, 16, 16, Game.spritesheet.getSprite(0, 48, 16, 16));
         Game.entities.add(Game.player);
         Game.world = new World("/"+ level);
-        
-        Game.restorePlayerState();
     }
 		
 	public void render(Graphics g) {
