@@ -13,6 +13,8 @@ public class Menu {
 	
 	public boolean up, down, enter;
 	
+	public boolean pause = false;
+	
 	public void tick() {
 		if(up) {
 			up = false;
@@ -32,8 +34,11 @@ public class Menu {
 		
 		if(enter) {
 			enter = false;
-			if(options[currentOption] == "Novo Jogo") {
+			if(options[currentOption] == "Novo Jogo" || options[currentOption] == "Continuar") {
 				Game.gameState = "NORMAL";
+				pause = false;
+			}  else if(options[currentOption] == "Sair") {
+				System.exit(0);
 			}
 		}
 		
@@ -45,18 +50,19 @@ public class Menu {
 		g.setColor(Color.white);
 		//Nome
 		g.setFont(new Font("arial", Font.BOLD, 36));
+		
 		g.drawString("RPG CLONE", (Game.WIDTH * Game.SCALE) / 2 - 100, (Game.HEIGHT * Game.SCALE) / 2 - 180);
+		if(pause == false) {
+			g.drawString("Novo Jogo", (Game.WIDTH * Game.SCALE) / 2 - 300, (Game.HEIGHT * Game.SCALE) / 2 - 50);			
+		} else {
+			g.drawString("Continuar", (Game.WIDTH * Game.SCALE) / 2 - 300, (Game.HEIGHT * Game.SCALE) / 2 - 50);
+		}
 		//Novo Jogo
-		g.setFont(new Font("arial", Font.BOLD, 26));
-		g.drawString("Novo Jogo", (Game.WIDTH * Game.SCALE) / 2 - 300, (Game.HEIGHT * Game.SCALE) / 2 - 50);
 		//Salvar Jogo
-		g.setFont(new Font("arial", Font.BOLD, 26));
 		g.drawString("Salvar Jogo", (Game.WIDTH * Game.SCALE) / 2 - 300, (Game.HEIGHT * Game.SCALE) / 2 - 10);
 		//Carregar Jogo
-		g.setFont(new Font("arial", Font.BOLD, 26));
 		g.drawString("Carregar Jogo", (Game.WIDTH * Game.SCALE) / 2 - 300, (Game.HEIGHT * Game.SCALE) / 2 + 30);
 		//Sair
-		g.setFont(new Font("arial", Font.BOLD, 26));
 		g.drawString("Sair", (Game.WIDTH * Game.SCALE) / 2 - 300, (Game.HEIGHT * Game.SCALE) / 2 + 70);
 		
 		switch(options[currentOption]) {
