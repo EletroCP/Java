@@ -62,6 +62,8 @@ private static final long serialVersionUID = 1L;
 	public UI ui;
 	
 	public static String gameState = "GAMEOVER";
+	private boolean showMessageGameOver = true;
+	private int framesGameOver = 0;
 	
 	public Game() {
 		rand = new Random();
@@ -152,10 +154,19 @@ private static final long serialVersionUID = 1L;
             String newWorld = "level" + CUR_LEVEL + ".png";
             World.restartGame(newWorld);
             restorePlayerState();
-	        } else if(gameState == "GAMEOVER") {
-	        	System.out.println("Game Over");
 	        }
-	    }
+		    } else if(gameState == "GAMEOVER") {
+				framesGameOver += 1;
+				System.out.println(framesGameOver);
+				if(framesGameOver == 25) {
+					framesGameOver = 0;
+					if(showMessageGameOver) {
+						showMessageGameOver = false;
+					} else {
+						showMessageGameOver = true;
+					}
+				}
+	        }
     }
 	
 	public void render() {
@@ -188,9 +199,11 @@ private static final long serialVersionUID = 1L;
 			g2.fillRect(0, 0, WIDTH * SCALE, HEIGHT * SCALE);
 			g.setFont(new Font("arial", Font.BOLD, 60));
 			g.setColor(Color.black);
-			g.drawString("Game Over", (WIDTH*SCALE) / 2 - 130, (HEIGHT * SCALE) / 2);
+			g.drawString("Game Over", (WIDTH*SCALE) / 2 - 150, (HEIGHT * SCALE) / 2);
 			g.setFont(new Font("arial", Font.BOLD, 30));
-			g.drawString(">Pressione Enter para reiniciar<", (WIDTH*SCALE) / 2 - 200, (HEIGHT * SCALE) / 2 + 35);
+			if(showMessageGameOver) {
+				g.drawString("> Pressione Enter para reiniciar <", (WIDTH*SCALE) / 2 - 220, (HEIGHT * SCALE) / 2 + 35);				
+			}
 		}
 		bs.show();
 	}
