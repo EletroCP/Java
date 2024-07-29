@@ -60,6 +60,7 @@ public class Javali extends Enemy {
     public void destroySelf() {
         Game.enemies.remove(this);
         Game.entities.remove(this);
+        Game.hasBoss = false;
         return;
     }
     
