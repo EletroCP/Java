@@ -352,6 +352,10 @@ private static final long serialVersionUID = 1L;
 	    	}
 	    }
 	    
+	    if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+	    	gameState = "MENU";
+	    }
+	    
 	}
 
 
