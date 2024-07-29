@@ -321,6 +321,7 @@ private static final long serialVersionUID = 1L;
 	    
 	    if(e.getKeyCode() == KeyEvent.VK_ENTER) {
 	    	resetGame = true;
+	    	menu.enter = true;
 	    }
 	    
 	    if(e.getKeyCode() == KeyEvent.VK_I) {

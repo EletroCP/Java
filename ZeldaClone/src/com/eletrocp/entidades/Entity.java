@@ -79,13 +79,11 @@ public class Entity {
 	
 	public void render(Graphics g) {
 		g.drawImage(sprite, this.getX() - Camera.x, this.getY() - Camera.y, null);
-		
-		// g.setColor(Color.red);
-		//g.fillRect(this.getX() +maskX - Camera.x, this.getY() + maskY - Camera.y, maskW, maskH);
+
 	}
 	
 	public void tick() {
-		// Comportamento da entidade no jogo
+		
 	}
 	
 	public static boolean isColidding(Entity e1, Entity e2) {

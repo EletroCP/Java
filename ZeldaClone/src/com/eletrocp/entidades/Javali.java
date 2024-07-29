@@ -22,7 +22,7 @@ public class Javali extends Enemy {
     protected int maskH;
     
     private int frames = 0, maxFrames = 5, index = 0, maxIndex = 1;
-    private double spd = 0;
+    private double spd = 0.7;
     private static final double RUN_DISTANCE = 60;
     
     private static int cooldown = 10*60, curCooldown = 0;
@@ -32,13 +32,13 @@ public class Javali extends Enemy {
     public Javali(double x, double y, int width, int height, BufferedImage sprite) {
         super(x, y, width, height, sprite);
         
+        maskX = 16;
+        maskY = 16;
+        maskW = 16;
+        maskH = 16;
+        
         this.life = 100;
         this.maxLife = 100;
-        this.maskX = 0;
-        this.maskY = 0;
-        this.maskW = width;
-        this.maskH = height;
-        
         Game.hasBoss = true;
 
     }
@@ -56,6 +56,22 @@ public class Javali extends Enemy {
             }
         }
     }
+    
+    public int getX() {
+		return (int)this.x;
+	}
+	
+	public int getY() {
+		return (int)this.y;
+	}
+	
+	public int getMaskX() {
+		return (int)this.maskY;
+	}
+	
+	public int getMaskY() {
+		return (int)this.maskY;
+	}
     
     public void destroySelf() {
         Game.enemies.remove(this);
@@ -93,8 +109,6 @@ public class Javali extends Enemy {
     
     public void tick() {
         moved = false;
-        System.out.println(spd);
-        System.out.println(canRun);
         
         if (!isColiddingWithPlayer()) {
             if ((int) x < Game.player.getX() && World.isFree((int) (x + spd), this.getY())

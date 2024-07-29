@@ -11,7 +11,7 @@ public class Menu {
 	public int currentOption = 0;
 	public int maxOption = options.length - 1;
 	
-	public boolean up, down;
+	public boolean up, down, enter;
 	
 	public void tick() {
 		if(up) {
@@ -27,6 +27,13 @@ public class Menu {
 			currentOption += 1;
 			if(currentOption > maxOption) {
 				currentOption = 0;
+			}
+		}
+		
+		if(enter) {
+			enter = false;
+			if(options[currentOption] == "Novo Jogo") {
+				Game.gameState = "NORMAL";
 			}
 		}
 		
