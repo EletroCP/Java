@@ -67,6 +67,8 @@ private static final long serialVersionUID = 1L;
 	private boolean showMessageGameOver = true;
 	private int framesGameOver = 0;
 	
+	public Menu menu;
+	
 	public Game() {
 		rand = new Random();
 		setPreferredSize(new Dimension(WIDTH*SCALE, HEIGHT*SCALE));
@@ -77,6 +79,8 @@ private static final long serialVersionUID = 1L;
 		entities = new ArrayList<Entity>();
 		enemies = new ArrayList<Enemy>();
 		projectiles = new ArrayList<Projectile>();
+		menu = new Menu();
+		
 		spritesheet = new SpriteSheet("/spritesheet.png");
 		player = new Player(0,0,16,16, spritesheet.getSprite(0, 48, 16, 16));
 		entities.add(player);
@@ -200,7 +204,7 @@ private static final long serialVersionUID = 1L;
 				}
 			}
 		} else if(gameState == "MENU") {
-			
+			menu.tick();
 		}
     }
 	
@@ -239,6 +243,9 @@ private static final long serialVersionUID = 1L;
 			if(showMessageGameOver) {
 				g.drawString("> Pressione Enter para reiniciar <", (WIDTH*SCALE) / 2 - 220, (HEIGHT * SCALE) / 2 + 35);				
 			}
+		} else if(gameState == "MENU") {
+			menu.render(g);
+			
 		}
 		
 		if(inventoryIsOpen) {
@@ -331,6 +338,19 @@ private static final long serialVersionUID = 1L;
 	    if(e.getKeyCode() == KeyEvent.VK_Q) {
 	    	previousWeapon();
 	    }
+	    
+	    if(e.getKeyCode() == KeyEvent.VK_UP) {
+	    	if(gameState == "MENU") {
+	    		menu.up = true;
+	    	}
+	    }
+	    
+	    if(e.getKeyCode() == KeyEvent.VK_DOWN) {
+	    	if(gameState == "MENU") {
+	    		menu.down = true;
+	    	}
+	    }
+	    
 	}
 
 
