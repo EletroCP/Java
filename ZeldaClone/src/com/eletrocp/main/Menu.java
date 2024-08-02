@@ -25,7 +25,7 @@ public class Menu {
 		if(up) {
 			up = false;
 			currentOption -= 1;
-			if(currentOption <= 0) {
+			if(currentOption < 0) {
 				currentOption = maxOption;
 			}
 		}
@@ -63,12 +63,9 @@ public class Menu {
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, Game.WIDTH, Game.WIDTH);
 		g.setColor(Color.white);
-		//Nome
 		g.setFont(new Font("arial", Font.BOLD, 36));
 		
-		g.drawString("RPG CLONE", (Game.WIDTH) / 2 - 100, (Game.HEIGHT) / 2 - 180);
-		//Novo Jogo
-		
+		g.drawString("RPG CLONE", (Game.WIDTH) / 2 - 100, (Game.HEIGHT) / 2 - 180);		
 		switch(menuState) {
 		case "CONFIGURACOES":
 			g.drawString("Video", (Game.WIDTH) / 2 - 300, (Game.HEIGHT) / 2 - 50);

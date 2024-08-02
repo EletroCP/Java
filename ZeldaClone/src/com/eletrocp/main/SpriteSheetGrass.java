@@ -1,4 +1,4 @@
-package com.eletrocp.graficos;
+package com.eletrocp.main;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
@@ -6,13 +6,13 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-public class SpriteSheet {
+public class SpriteSheetGrass {
 	
-	private BufferedImage sheet;
+	private BufferedImage grassSheet;
 	
-	public SpriteSheet(String path) {
+	public SpriteSheetGrass(String path) {
 		try {
-			sheet = ImageIO.read(getClass().getResource(path));
+			grassSheet = ImageIO.read(getClass().getResource(path));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -21,7 +21,7 @@ public class SpriteSheet {
 	public BufferedImage getSprite(int x, int y, int width, int height) {
 		BufferedImage sprite = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 		Graphics g = sprite.getGraphics();
-		g.drawImage(sheet.getSubimage(x, y, width, height), 0, 0, null);
+		g.drawImage(grassSheet.getSubimage(x, y, width, height), 0, 0, null);
 		g.dispose();
 		return sprite;
 	}

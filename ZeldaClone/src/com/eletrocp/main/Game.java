@@ -31,11 +31,11 @@ private static final long serialVersionUID = 1L;
 	public static JFrame frame;
 	private Thread thread;
 	private boolean isRunning;
-	public final static int WIDTH = 240;
-	public final static int HEIGHT = 160;
+	public final static int WIDTH = 720;
+	public final static int HEIGHT = 480;
 	public static int frames = 0;
 	public static int FPS;
-	public final static int SCALE  = 3;
+	public final static int SCALE  = 1;
 	public static int bossLife = 100, bossMaxLife = 100;
 	
 	private int CUR_LEVEL = 1, MAX_LEVEL = 3;	
