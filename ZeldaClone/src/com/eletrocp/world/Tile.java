@@ -7,7 +7,7 @@ import com.eletrocp.main.Game;
 
 public class Tile {
 	
-	public static BufferedImage TILE_FLOOR = Game.spritesheet.getSprite(0, 0, 32, 32);
+	public static BufferedImage TILE_FLOOR = Game.spritesheet.getSprite(0, 272, 42, 42);
 	public static BufferedImage TILE_WALL = Game.spritesheet.getSprite(32, 0, 32, 32);
 	public static BufferedImage TILE_GRASS_UP_DOWN = Game.spritesheet.getSprite(64, 0, 32, 32);
 	public static BufferedImage TILE_GRASS_LEFT_RIGHT = Game.spritesheet.getSprite(96, 0, 32, 32);

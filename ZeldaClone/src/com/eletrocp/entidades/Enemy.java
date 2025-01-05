@@ -91,7 +91,7 @@ public class Enemy extends Entity {
 		} else {
 			if (Game.rand.nextInt(100) < 10) {
 				Game.player.life -= Game.rand.nextInt(1,3);
-				Game.player.isDamaged = true;
+				Player.isDamaged = true;
 				if(push) {
 					Game.player.applyKnockback(x, y); // Aplicar knockback ao jogador
 				}

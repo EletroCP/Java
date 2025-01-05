@@ -16,8 +16,8 @@ public class Javali extends Enemy {
     public int life;
     public int maxLife;
     
-    protected int maskX;
-    protected int maskY;
+    protected double maskX;
+    protected double maskY;
     protected int maskW;
     protected int maskH;
     
@@ -32,11 +32,11 @@ public class Javali extends Enemy {
     public Javali(double x, double y, int width, int height, BufferedImage sprite) {
         super(x, y, width, height, sprite);
         
-        maskX = 16;
-        maskY = 16;
-        maskW = 16;
-        maskH = 16;
-        
+        this.setMask(6, 14, 48, 15);
+        maskX = 6;
+        maskY = 14;
+        maskW = 48;
+        maskH = 15;
         this.life = 100;
         this.maxLife = 100;
         Game.hasBoss = true;
@@ -66,7 +66,7 @@ public class Javali extends Enemy {
 	}
 	
 	public int getMaskX() {
-		return (int)this.maskY;
+		return (int)this.maskX;
 	}
 	
 	public int getMaskY() {
@@ -101,15 +101,14 @@ public class Javali extends Enemy {
 
         double distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
         if (distance < RUN_DISTANCE && canRun) {
-            this.spd = 1.5;
+            this.spd = 1.2;
         } else {
-            this.spd = 0;
+            this.spd = 0.7;
         }
     }
     
     public void tick() {
         moved = false;
-        
         if (!isColiddingWithPlayer()) {
             if ((int) x < Game.player.getX() && World.isFree((int) (x + spd), this.getY())
                     && !isColidding((int) (x + spd), this.getY())) {
@@ -148,7 +147,7 @@ public class Javali extends Enemy {
         } else {
             if (Game.rand.nextInt(100) < 10) {
                 Game.player.life -= Game.rand.nextInt(1,3);
-                Game.player.isDamaged = true;
+                Player.isDamaged = true;
                 if(push) {
                     Game.player.applyKnockback(x, y);
                 }
@@ -174,9 +173,20 @@ public class Javali extends Enemy {
     }
     
     public void render(Graphics g) {
+        // Renderizar a sprite do javali
         g.drawImage(javali, this.getX() - Camera.x, this.getY() - Camera.y, null);
-        
-        g.setColor(Color.red);
-        g.fillRect(this.getX() + maskX - Camera.x, this.getY() + maskY - Camera.y, maskW, maskH);
+
+        // Renderizar a área de colisão (modo depuração)
+        boolean debugMode = false; // Altere para "false" para desativar o modo de depuração
+        if (debugMode) {
+            g.setColor(Color.red); // Cor da área de colisão
+
+            g.drawRect(
+                (int)(this.x + this.maskX - Camera.x), // Posição X da máscara ajustada pela câmera
+                (int)(this.y + this.maskY - Camera.y), // Posição Y da máscara ajustada pela câmera
+                maskW,                                // Largura da máscara
+                maskH                                 // Altura da máscara
+            );
+        }
     }
 }

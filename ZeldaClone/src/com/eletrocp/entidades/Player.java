@@ -28,7 +28,7 @@ public class Player extends Entity {
 
     private boolean moved = false;
     public boolean hasWeapon = false;
-    public boolean isDamaged = false;
+    public static boolean isDamaged = false;
     public boolean right, left, up, down;
     public static boolean knockback = false;
     public static boolean hasAtack = false;
@@ -67,7 +67,7 @@ public class Player extends Entity {
         upPlayer = new BufferedImage[2];
         downPlayer = new BufferedImage[2];
         knockbackPlayer = new BufferedImage[2];
-        playerDamage = new BufferedImage[4];
+        playerDamage = new BufferedImage[4];     
         
         playerWithSword = new BufferedImage[1];
         playerWithCepter = new BufferedImage[1];
@@ -417,79 +417,76 @@ public class Player extends Entity {
     }
 
     public void render(Graphics g) {
-        if (knockback) {
-            int knockbackIndex = index % knockbackPlayer.length;
-            g.drawImage(knockbackPlayer[knockbackIndex], this.getX() - Camera.x, this.getY() - Camera.y, null);
-        } else if (isDamaged) {
-            int damageIndex = index % playerDamage.length;
-            g.drawImage(playerDamage[damageIndex], this.getX() - Camera.x, this.getY() - Camera.y, null);
-        } else {
-            int animationIndex = index % getCurrentAnimation().length;
-            g.drawImage(getCurrentAnimation()[animationIndex], this.getX() - Camera.x, this.getY() - Camera.y, null);
+    	int animationIndex = index % getCurrentAnimation().length;
+    	g.drawImage(getCurrentAnimation()[animationIndex], this.getX() - Camera.x, this.getY() - Camera.y, null);
+    	if (hasWeapon) {
+    	    if (!attacking) {
+    	        int weaponIndex = index % getCurrentAnimationWithWeapon().length;
+    	        g.drawImage(getCurrentAnimationWithWeapon()[weaponIndex], weaponPositionX(), weaponPositionY(), null);
+    	    } else {
+    	        if (weaponID == 1) {
+    	            int weaponX = weaponPositionX();
+    	            int weaponY = weaponPositionY();
+    	            BufferedImage swordImage = sword;
+    	            if (dir == right_dir) {
+    	                weaponX += 6;
+    	                weaponY += 5;
+    	                swordImage = swordRotatedRight;
+    	            } else if (dir == left_dir) {
+    	                weaponX -= 6;
+    	                weaponY += 4;
+    	                swordImage = swordRotatedLeft;
+    	            } else if (dir == up_dir) {
+    	                weaponY -= 6;
+    	            } else if (dir == down_dir) {
+    	                weaponY += 3;
+    	            }
 
-            if (hasWeapon) {
-                if (attacking) {
-                	if(weaponID == 1) {
-                		int weaponX = weaponPositionX();
-                        int weaponY = weaponPositionY();
-                        BufferedImage swordImage = sword;
+    	            g.drawImage(swordImage, weaponX, weaponY, null);
 
-                        if (dir == right_dir) {
-                            weaponX += 6;
-                            weaponY += 5;
-                            swordImage = swordRotatedRight;
-                        } else if (dir == left_dir) {
-                            weaponX -= 6;
-                            weaponY += 4;
-                            swordImage = swordRotatedLeft;
-                        } else if (dir == up_dir) {
-                            weaponY -= 6;
-                        } else if (dir == down_dir) {
-                        	weaponY += 3;
-                        }
+    	            attackFrames++;
+    	            if (attackFrames >= maxAttackFrames) {
+    	                attacking = false;
+    	            }
+    	        } else if (weaponID == 2) {
+    	            int weaponX = weaponPositionX();
+    	            int weaponY = weaponPositionY();
+    	            BufferedImage cetroImage = cetro;
 
-                        g.drawImage(swordImage, weaponX, weaponY, null);
+    	            if (dir == right_dir) {
+    	                weaponX += 6;
+    	                weaponY += 5;
+    	                cetroImage = cetroRotatedRight;
+    	            } else if (dir == left_dir) {
+    	                weaponX -= 6;
+    	                weaponY += 4;
+    	                cetroImage = cetroRotatedLeft;
+    	            } else if (dir == up_dir) {
+    	                weaponY -= 6;
+    	            } else if (dir == down_dir) {
+    	                weaponY += 3;
+    	            }
 
-                        attackFrames++;
-                        if (attackFrames >= maxAttackFrames) {
-                            attacking = false;
-                        }
-                	} else if (weaponID == 2) {
-                		
-                		int weaponX = weaponPositionX();
-                		int weaponY = weaponPositionY();
-                		BufferedImage cetroImage = cetro;
-                		
-                		if (dir == right_dir) {
-                			weaponX += 6;
-                			weaponY += 5;
-                			cetroImage = cetroRotatedRight;
-                		} else if (dir == left_dir) {
-                			weaponX -= 6;
-                			weaponY += 4;
-                			cetroImage = cetroRotatedLeft;
-                		} else if (dir == up_dir) {
-                			weaponY -= 6;
-                		} else if (dir == down_dir) {
-                			weaponY += 3;
-                		}
-                		
-                		g.drawImage(cetroImage, weaponX, weaponY, null);
-                		
-                		attackFrames++;
-                		if (attackFrames >= maxAttackFrames) {
-                			attacking = false;
-                		}
-                	}
-                } else {
-                    int weaponIndex = index % getCurrentAnimationWithWeapon().length;
-                    g.drawImage(getCurrentAnimationWithWeapon()[weaponIndex], weaponPositionX(), weaponPositionY(), null);
-                }
-            }
-        }
+    	            g.drawImage(cetroImage, weaponX, weaponY, null);
+
+    	            attackFrames++;
+    	            if (attackFrames >= maxAttackFrames) {
+    	                attacking = false;
+    	            }
+    	        }
+    	    }
+    	}
+    	
+    	if (isDamaged) {
+    		if(knockback) {
+    			int knockbackIndex = index % knockbackPlayer.length;
+    			g.drawImage(knockbackPlayer[knockbackIndex], this.getX() - Camera.x, this.getY() - Camera.y, null);
+    		} else {
+				int damageIndex = index % playerDamage.length;
+				g.drawImage(playerDamage[damageIndex], this.getX() - Camera.x, this.getY() - Camera.y, null);
+    		}
+		}
     }
-
-
 
     public void applyKnockback(double enemyX, double enemyY) {
         double angle = Math.atan2(y - enemyY, x - enemyX);
