@@ -70,6 +70,7 @@ private static final long serialVersionUID = 1L;
 	public Menu menu;
 	
 	public Game() {
+		Sound.musicBackground.play();
 		rand = new Random();
 		setPreferredSize(new Dimension(WIDTH*SCALE, HEIGHT*SCALE));
 		initFrame();

@@ -5,6 +5,7 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import com.eletrocp.main.Game;
+import com.eletrocp.main.Sound;
 import com.eletrocp.world.Camera;
 import com.eletrocp.world.World;
 
@@ -90,6 +91,7 @@ public class Enemy extends Entity {
 			}
 		} else {
 			if (Game.rand.nextInt(100) < 10) {
+				Sound.hurt.play();
 				Game.player.life -= Game.rand.nextInt(1,3);
 				Player.isDamaged = true;
 				if(push) {
