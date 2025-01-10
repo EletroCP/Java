@@ -1,5 +1,6 @@
 package com.eletrocp.entidades;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import com.eletrocp.main.Game;
@@ -32,6 +33,11 @@ public class Player extends Entity {
     public boolean right, left, up, down;
     public static boolean knockback = false;
     public static boolean hasAtack = false;
+    public boolean jump = false;
+    public boolean jumpUp = false, jumpDown = false;
+    public static int z = 0;
+    public int jumpFrames = 50, jumpCur = 0;
+    public boolean isjumping = false;
     
     private boolean attacking = false;
     private int attackFrames = 0;
@@ -110,6 +116,36 @@ public class Player extends Entity {
     }
 
     public void tick() {
+    	
+    	if (!isjumping && jump) {
+	    		jump = false; // Reseta o estado de pulo
+	    		isjumping = true; // Inicia o pulo
+	    		jumpUp = true; // Define direção para cima
+	    		jumpDown = false; // Garante que não está descendo
+	    		jumpCur = 0; // Inicializa a posição atual do pulo
+    		}
+
+    		if (isjumping) {
+	    		if (jumpUp) {
+		    		jumpCur += 2; // Sobe no pulo
+		    		if (jumpCur >= jumpFrames) { // Altura máxima atingida
+			    		jumpUp = false;
+			    		jumpDown = true;
+		    		}
+	    		} else if (jumpDown) {
+		    		jumpCur -= 2; // Desce no pulo
+		    		if (jumpCur <= 0) { // Volta ao chão
+			    		isjumping = false; // Termina o pulo
+			    		jumpDown = false; // Reseta estado de descida
+			    		jumpCur = 0; // Garante que está no chão
+		    		}
+	    		}
+
+	    		z = jumpCur; // Atualiza a posição vertical
+    		}
+
+    		
+    	
         if (knockback) {
             handleKnockback();
         } else {
@@ -289,17 +325,17 @@ public class Player extends Entity {
         switch (weaponID) {
             case 1:
                 switch (dir) {
-                    case 0: return this.getY() - Camera.y - 4;
-                    case 1: return this.getY() - Camera.y - 3;
-                    case 2: return this.getY() - Camera.y - 4;
-                    case 3: return this.getY() - Camera.y - 4;
+                    case 0: return this.getY() - (Camera.y + z) - 4;
+                    case 1: return this.getY() - (Camera.y + z)  - 3;
+                    case 2: return this.getY() - (Camera.y + z)  - 4;
+                    case 3: return this.getY() - (Camera.y + z)  - 4;
                 }
             case 2:
                 switch (dir) {
-                    case 0: return this.getY() - Camera.y - 2;
-                    case 1: return this.getY() - Camera.y - 2;
-                    case 2: return this.getY() - Camera.y - 3;
-                    case 3: return this.getY() - Camera.y - 3;
+                    case 0: return this.getY() - (Camera.y + z)  - 2;
+                    case 1: return this.getY() - (Camera.y + z)  - 2;
+                    case 2: return this.getY() - (Camera.y + z)  - 3;
+                    case 3: return this.getY() - (Camera.y + z)  - 3;
                 }
             default: return 1;
         }
@@ -418,7 +454,7 @@ public class Player extends Entity {
 
     public void render(Graphics g) {
     	int animationIndex = index % getCurrentAnimation().length;
-    	g.drawImage(getCurrentAnimation()[animationIndex], this.getX() - Camera.x, this.getY() - Camera.y, null);
+    	g.drawImage(getCurrentAnimation()[animationIndex], this.getX() - Camera.x, this.getY() - Camera.y - z, null);
     	if (hasWeapon) {
     	    if (!attacking) {
     	        int weaponIndex = index % getCurrentAnimationWithWeapon().length;
@@ -480,12 +516,17 @@ public class Player extends Entity {
     	if (isDamaged) {
     		if(knockback) {
     			int knockbackIndex = index % knockbackPlayer.length;
-    			g.drawImage(knockbackPlayer[knockbackIndex], this.getX() - Camera.x, this.getY() - Camera.y, null);
+    			g.drawImage(knockbackPlayer[knockbackIndex], this.getX() - Camera.x, this.getY() - Camera.y - z, null);
     		} else {
 				int damageIndex = index % playerDamage.length;
-				g.drawImage(playerDamage[damageIndex], this.getX() - Camera.x, this.getY() - Camera.y, null);
+				g.drawImage(playerDamage[damageIndex], this.getX() - Camera.x, this.getY() - Camera.y - z, null);
     		}
 		}
+    	
+    	if(isjumping) {
+    		g.setColor(Color.black);
+    		g.fillOval(this.getX() - Camera.x + 2, this.getY() - Camera.y + 14, 14, 6);
+    	}
     }
 
     public void applyKnockback(double enemyX, double enemyY) {
