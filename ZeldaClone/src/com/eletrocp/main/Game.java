@@ -70,7 +70,6 @@ private static final long serialVersionUID = 1L;
 	public Menu menu;
 	
 	public Game() {
-		Sound.musicBackground.play();
 		rand = new Random();
 		setPreferredSize(new Dimension(WIDTH*SCALE, HEIGHT*SCALE));
 		initFrame();
@@ -90,6 +89,7 @@ private static final long serialVersionUID = 1L;
 		
 		this.addKeyListener(this);
 		this.setFocusable(true);
+		// Sound.musicBackground.loop();
 	}
 		
 	public void initFrame() {
@@ -294,6 +294,10 @@ private static final long serialVersionUID = 1L;
 	}
 
 	public void keyPressed(KeyEvent e) {
+		if(e.getKeyCode() == KeyEvent.VK_R) {
+			player.jump = true;
+		}
+		
 	    if(e.getKeyCode() == KeyEvent.VK_D) {
 	        player.right = true;
 	    } else if(e.getKeyCode() == KeyEvent.VK_A) {
